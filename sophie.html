@@ -23,12 +23,12 @@
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Net Sales</div>
   <div style="font-size:24px;font-weight:700;color:#16a34a">$1,328.70</div>
-  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↑ 204.3% (+$892.09) vs last Mon</div></div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↑ 143.9% (+$783.83) vs last Mon</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Avg Check</div>
   <div style="font-size:24px;font-weight:700;color:#16a34a">$166.09</div>
-  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↑ 318.5% (+$126.40) vs last Mon</div></div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↑ 174.3% (+$105.55) vs last Mon</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Covers</div>
@@ -42,7 +42,7 @@
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Labor Hours</div>
   <div style="font-size:24px;font-weight:700;color:#16a34a">28.9h</div>
-  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#dc2626">↑ 63.5% (+11.2h) vs last Mon</div></div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#dc2626">↑ 13.9% (+3.5h) vs last Mon</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Overtime</div>
@@ -56,37 +56,37 @@
   <div style="display:flex;justify-content:space-between;align-items:center;padding:0 0 12px 0;border-bottom:1px solid #d0d7e0;margin-bottom:8px">
     <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Staff on Clock</span>
     <div style="text-align:right">
-      <span style="font-size:12px;font-weight:600;color:#16a34a">↓ -1 vs last Mon</span>
+      <span style="font-size:12px;font-weight:600;color:#16a34a">↓ -2 vs last Mon</span>
       <span style="font-size:16px;font-weight:700;color:#1a202c;margin-left:10px">3 people</span>
     </div>
   </div>
   <div style="font-size:11px;color:#4a5568;margin-bottom:8px;font-style:italic">Tap a role to see individual employees</div>
   <div style="border-bottom:1px solid #d0d7e0">
-  <div  style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+  <div onclick="toggleRole(0)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:12px"></span>
+      <span id="icon-0" style="font-size:10px;color:#4a5568;width:12px">▶</span>
       <span style="font-size:13px;color:#1a202c">Bartender</span>
     </div>
     <div style="text-align:right">
-      <span style="font-size:11px;font-weight:600;color:#16a34a">↓ 7.5% (-1.1h) vs last Mon</span>
+      <span style="font-size:11px;font-weight:600;color:#16a34a">↓ 4.0% (-0.6h) vs last Mon</span>
       <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">13.0h</span>
     </div>
   </div>
-  
-  
+  <div id="emp-0" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
+  </div>
 </div><div style="border-bottom:1px solid #d0d7e0">
-  <div  style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+  <div onclick="toggleRole(1)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:12px"></span>
+      <span id="icon-1" style="font-size:10px;color:#4a5568;width:12px">▶</span>
       <span style="font-size:13px;color:#1a202c">Server</span>
     </div>
     <div style="text-align:right">
-      <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 135.0% (+4.8h) vs last Mon</span>
+      <span style="font-size:11px;color:#4a5568">No prior data</span>
       <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">8.3h</span>
     </div>
   </div>
-  
-  
+  <div id="emp-1" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
+  </div>
 </div><div style="border-bottom:1px solid #d0d7e0">
   <div  style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
     <div style="display:flex;align-items:center;gap:8px">
@@ -94,7 +94,7 @@
       <span style="font-size:13px;color:#1a202c">Barback</span>
     </div>
     <div style="text-align:right">
-      <span style="font-size:11px;color:#4a5568">No prior data</span>
+      <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 28.7% (+1.7h) vs last Mon</span>
       <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">7.5h</span>
     </div>
   </div>
@@ -173,7 +173,7 @@
 
 
 <script>
-const empData = {"0": [], "1": [], "2": []};
+const empData = {"0": [{"name": "Bar  Downstairs", "hours": 11.62, "cmp": 518.1, "delta": 9.7}, {"name": "Alejandro Tzoc", "hours": 8.91, "cmp": null, "delta": null}], "1": [{"name": "Rachel Holley", "hours": 8.32, "cmp": null, "delta": null}], "2": []};
 const colors = {
   text: '#1a202c', sub: '#4a5568', green: '#16a34a',
   red: '#dc2626', yellow: '#d97706', emp_bg: '#f0f4f8', border: '#d0d7e0'
