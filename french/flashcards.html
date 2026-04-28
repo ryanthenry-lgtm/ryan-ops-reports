@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🃏 French Flashcard Bank</title>
+<style>
+:root {--blue:#1565C0;--green:#2E7D32;--orange:#E65100;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f7fa;color:#222;line-height:1.6}
+header{background:var(--blue);color:#fff;padding:16px 20px}
+header h1{font-size:1.3rem}
+.container{max-width:900px;margin:0 auto;padding:16px}
+.back-link{display:inline-block;margin-bottom:12px;color:var(--blue);text-decoration:none;font-weight:500}
+.stats{background:#fff;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.1);font-size:.95rem}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{border:1px solid #ccc;background:#fff;border-radius:20px;padding:6px 16px;cursor:pointer;font-size:.85rem;transition:all .2s}
+.filter-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.fc{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.1);border-left:4px solid #ccc}
+.fc.got_it{border-left-color:#4CAF50}
+.fc.learning{border-left-color:#FF9800}
+.fc-fr{font-size:1.2rem;font-weight:700;color:var(--blue)}
+.fc-en{color:#555;font-size:.9rem;margin-bottom:4px}
+.fc-ex{font-size:.8rem;color:#888;font-style:italic}
+.fc-meta{font-size:.75rem;color:#bbb;margin-top:6px}
+footer{text-align:center;padding:24px;font-size:.8rem;color:#888}
+footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>🃏 Cumulative Flashcard Bank</h1>
+</header>
+<div class="container">
+  <a class="back-link" href="index.html">← All Lessons</a>
+  <div class="stats">
+    Words mastered: <strong id="mastered-count">0</strong> / <strong id="total-count">0</strong>
+    &nbsp;·&nbsp; Still learning: <strong id="learning-count">0</strong>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+    <button class="filter-btn" onclick="filterCards('got_it', this)">✅ Got It</button>
+    <button class="filter-btn" onclick="filterCards('learning', this)">🔁 Still Learning</button>
+    <button class="filter-btn" onclick="filterCards('new', this)">🆕 Not Started</button>
+  </div>
+  <div class="cards-grid" id="cards-grid"></div>
+</div>
+<footer>
+  🇫🇷 Ryan's French Journey · <a href="index.html">Lessons</a>
+</footer>
+<script>
+const WORDS = [{"french": "bonjour", "english": "hello / good morning", "example_fr": "Bonjour, comment ça va ?", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "bonsoir", "english": "good evening", "example_fr": "Bonsoir, madame.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "au revoir", "english": "goodbye", "example_fr": "Au revoir, à bientôt !", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "merci", "english": "thank you", "example_fr": "Merci beaucoup !", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "s'il vous plaît", "english": "please (formal)", "example_fr": "Un café, s'il vous plaît.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "oui", "english": "yes", "example_fr": "Oui, c'est correct.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "non", "english": "no", "example_fr": "Non, merci.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "excusez-moi", "english": "excuse me", "example_fr": "Excusez-moi, où est la gare ?", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "pardon", "english": "sorry / pardon", "example_fr": "Pardon, je ne comprends pas.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "comment ça va", "english": "how are you", "example_fr": "Comment ça va ? Ça va bien, merci.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "je m'appelle", "english": "my name is", "example_fr": "Je m'appelle Ryan.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "enchanté", "english": "nice to meet you", "example_fr": "Enchanté de vous rencontrer.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "d'accord", "english": "okay / agreed", "example_fr": "D'accord, on se retrouve à midi.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "voilà", "english": "here it is / there you go", "example_fr": "Voilà votre café.", "day": 1, "theme": "Essential Greetings & Basics"}, {"french": "à bientôt", "english": "see you soon", "example_fr": "À bientôt, bonne journée !", "day": 1, "theme": "Essential Greetings & Basics"}];
+const STATUS_KEY = 'french_word_status';
+function getStatus() { return JSON.parse(localStorage.getItem(STATUS_KEY)||'{}'); }
+
+function renderCards(filter='all') {
+  const s = getStatus();
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+  let mastered=0, learning=0;
+  WORDS.forEach(w => {
+    const ws = s[w.french];
+    const status = ws ? ws.status : 'new';
+    if (status === 'got_it') mastered++;
+    else if (status === 'learning') learning++;
+    if (filter !== 'all' && filter !== status) return;
+    const div = document.createElement('div');
+    div.className = 'fc ' + status;
+    div.innerHTML = `
+      <div class="fc-fr">${w.french}</div>
+      <div class="fc-en">${w.english}</div>
+      <div class="fc-ex">${w.example_fr}</div>
+      <div class="fc-meta">Day ${w.day} · ${w.theme}</div>`;
+    grid.appendChild(div);
+  });
+  document.getElementById('mastered-count').textContent = mastered;
+  document.getElementById('total-count').textContent = WORDS.length;
+  document.getElementById('learning-count').textContent = learning;
+}
+
+function filterCards(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(filter);
+}
+
+renderCards();
+</script>
+</body>
+</html>
