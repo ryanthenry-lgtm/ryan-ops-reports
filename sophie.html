@@ -16,24 +16,24 @@
   <div style="background:#f0fdf4;color:#16a34a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bbf7d0">Live</div>
 </div>
 
-<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px"><span style="font-size:18px">⏳</span><div style="font-size:13px;color:#92400e"><strong>Toast order data syncing</strong> — Revenue, covers and avg check will populate shortly.</div></div>
+
 
 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px">📊 Sales</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px">
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Net Sales</div>
-  <div style="font-size:16px;font-weight:700;color:#94a3b8">Pending</div>
-  <div style="margin-top:4px"><div style="font-size:11px;color:#4a5568">— vs last Wed</div></div>
+  <div style="font-size:24px;font-weight:700;color:#16a34a">$818.85</div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#dc2626">↓ 49.2% ($793.44) vs last Wed</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Avg Check</div>
-  <div style="font-size:16px;font-weight:700;color:#94a3b8">Pending</div>
-  <div style="margin-top:4px"><div style="font-size:11px;color:#4a5568">— vs last Wed</div></div>
+  <div style="font-size:24px;font-weight:700;color:#16a34a">$38.99</div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#dc2626">↓ 61.3% ($61.78) vs last Wed</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Covers</div>
-  <div style="font-size:16px;font-weight:700;color:#94a3b8">Pending</div>
-  <div style="margin-top:4px"><div style="font-size:11px;color:#4a5568">— vs last Wed</div></div>
+  <div style="font-size:24px;font-weight:700;color:#1a202c">29</div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↑ 20.8% (+5) vs last Wed</div></div>
 </div>
 </div>
 
@@ -41,8 +41,8 @@
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Labor Hours</div>
-  <div style="font-size:24px;font-weight:700;color:#16a34a">0.0h</div>
-  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#16a34a">↓ 100.0% (-34.7h) vs last Wed</div></div>
+  <div style="font-size:24px;font-weight:700;color:#16a34a">47.1h</div>
+  <div style="margin-top:4px"><div style="font-size:12px;font-weight:600;color:#dc2626">↑ 35.7% (+12.4h) vs last Wed</div></div>
 </div>
   <div style="background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0">
   <div style="font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Overtime</div>
@@ -51,6 +51,57 @@
 </div>
 </div>
 
+<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px">👥 Staff Detail</div>
+<div style="background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);;margin-bottom:4px">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 0 12px 0;border-bottom:1px solid #d0d7e0;margin-bottom:8px">
+    <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Staff on Clock</span>
+    <div style="text-align:right">
+      <span style="font-size:12px;font-weight:600;color:#16a34a">↓ -1 vs last Wed</span>
+      <span style="font-size:16px;font-weight:700;color:#1a202c;margin-left:10px">6 people</span>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#4a5568;margin-bottom:8px;font-style:italic">Tap a role to see individual employees</div>
+  <div style="border-bottom:1px solid #d0d7e0">
+  <div onclick="toggleRole(0)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="icon-0" style="font-size:10px;color:#4a5568;width:12px">▶</span>
+      <span style="font-size:13px;color:#1a202c">Bartender</span>
+    </div>
+    <div style="text-align:right">
+      <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 56.0% (+7.7h) vs last Wed</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">21.5h</span>
+    </div>
+  </div>
+  <div id="emp-0" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
+  </div>
+</div><div style="border-bottom:1px solid #d0d7e0">
+  <div onclick="toggleRole(1)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="icon-1" style="font-size:10px;color:#4a5568;width:12px">▶</span>
+      <span style="font-size:13px;color:#1a202c">Barback</span>
+    </div>
+    <div style="text-align:right">
+      <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 131.3% (+11.6h) vs last Wed</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">20.4h</span>
+    </div>
+  </div>
+  <div id="emp-1" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
+  </div>
+</div><div style="border-bottom:1px solid #d0d7e0">
+  <div onclick="toggleRole(2)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="icon-2" style="font-size:10px;color:#4a5568;width:12px">▶</span>
+      <span style="font-size:13px;color:#1a202c">Server</span>
+    </div>
+    <div style="text-align:right">
+      <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 58.5% (+1.9h) vs last Wed</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">5.2h</span>
+    </div>
+  </div>
+  <div id="emp-2" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
+  </div>
+</div>
+</div>
 
 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px">🕐 Clock-Outs</div>
 <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);;margin-bottom:4px">
@@ -60,24 +111,30 @@
 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px">💸 Voids, Discounts & Comps</div>
 <div style="background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);;margin-bottom:4px">
   <div style="border-bottom:1px solid #d0d7e0">
-  <div  style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+  <div onclick="toggleSection('voids-detail')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:12px"></span>
+      <span id="icon-voids-detail" style="font-size:10px;color:#4a5568;width:12px">▶</span>
       <span style="font-size:13px;color:#1a202c">Voids</span>
     </div>
-    <span style="font-size:13px;font-weight:600;color:#94a3b8">Pending</span>
+    <span style="font-size:13px;font-weight:600;color:#1a202c">0 items · $ Pending</span>
   </div>
-  
+  <div id="voids-detail" style="display:none;background:#e8ecf0;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px"><div style="display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-bottom:1px solid #d0d7e0;margin-bottom:4px">
+  <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Item</span>
+  <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568;text-align:right">Amount</span>
+</div></div>
 </div>
   <div style="border-bottom:1px solid #d0d7e0">
-  <div  style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
+  <div onclick="toggleSection('disc-detail')" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 0;user-select:none">
     <div style="display:flex;align-items:center;gap:8px">
-      <span style="width:12px"></span>
+      <span id="icon-disc-detail" style="font-size:10px;color:#4a5568;width:12px">▶</span>
       <span style="font-size:13px;color:#1a202c">Discounts</span>
     </div>
-    <span style="font-size:13px;font-weight:600;color:#94a3b8">Pending</span>
+    <span style="font-size:13px;font-weight:600;color:#d97706">0 applied · $ Pending</span>
   </div>
-  
+  <div id="disc-detail" style="display:none;background:#e8ecf0;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px"><div style="display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-bottom:1px solid #d0d7e0;margin-bottom:4px">
+  <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Item / Discount</span>
+  <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568;text-align:right">Amount</span>
+</div></div>
 </div>
   
   <div style="border-bottom:1px solid #d0d7e0">
@@ -86,7 +143,7 @@
       <span style="width:12px"></span>
       <span style="font-size:13px;color:#1a202c">Comps</span>
     </div>
-    <span style="font-size:13px;font-weight:600;color:#94a3b8">Pending</span>
+    <span style="font-size:13px;font-weight:600;color:#1a202c">$0.00</span>
   </div>
   
 </div>
@@ -104,7 +161,7 @@
 
 
 <script>
-const empData = {};
+const empData = {"0": [{"name": "Bar  Downstairs", "hours": 8.16, "cmp": 140.7, "delta": 4.8}, {"name": "Emily Ohearn", "hours": 7.78, "cmp": null, "delta": null}, {"name": "Bar Upstairs", "hours": 5.6, "cmp": 8.1, "delta": 0.4}], "1": [{"name": "Alexander Haq", "hours": 11.5, "cmp": null, "delta": null}, {"name": "Wilmer Castro", "hours": 8.88, "cmp": 0.8, "delta": 0.1}], "2": [{"name": "Sayda Mazariego", "hours": 5.23, "cmp": 58.5, "delta": 1.9}]};
 const colors = {
   text: '#1a202c', sub: '#4a5568', green: '#16a34a',
   red: '#dc2626', yellow: '#d97706', emp_bg: '#f0f4f8', border: '#d0d7e0'
