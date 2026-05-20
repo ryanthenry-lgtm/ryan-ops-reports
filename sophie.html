@@ -63,11 +63,17 @@
 
 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px">👥 Staff Detail</div>
 <div style="background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);;margin-bottom:4px">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 0 16px 0;border-bottom:2px solid #d0d7e0;margin-bottom:12px">
+    <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Total Wages Paid</span>
+    <div style="text-align:right">
+      <span style="font-size:16px;font-weight:700;color:#16a34a">$595</span>
+      <span style="font-size:12px;color:#4a5568;margin-left:8px">9 people</span>
+    </div>
+  </div>
   <div style="display:flex;justify-content:space-between;align-items:center;padding:0 0 12px 0;border-bottom:1px solid #d0d7e0;margin-bottom:8px">
     <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568">Staff on Clock</span>
     <div style="text-align:right">
       <span style="font-size:12px;font-weight:600;color:#dc2626">↑ +4 vs last Tue</span>
-      <span style="font-size:16px;font-weight:700;color:#1a202c;margin-left:10px">9 people</span>
     </div>
   </div>
   <div style="font-size:11px;color:#4a5568;margin-bottom:8px;font-style:italic">Tap a role to see individual employees</div>
@@ -79,7 +85,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;font-weight:600;color:#dc2626">↑ 342.8% (+32.1h) vs last Tue</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">41.5h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">41.5h · <span style='color:#16a34a'>$88</span></span>
     </div>
   </div>
   <div id="emp-0" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -92,7 +98,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;font-weight:600;color:#16a34a">↓ 13.7% (-1.5h) vs last Tue</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">9.6h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">9.6h · <span style='color:#16a34a'>$289</span></span>
     </div>
   </div>
   <div id="emp-1" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -105,7 +111,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;font-weight:600;color:#16a34a">↓ 31.6% (-3.2h) vs last Tue</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">7.0h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">7.0h · <span style='color:#16a34a'>$51</span></span>
     </div>
   </div>
   <div id="emp-2" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -118,7 +124,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;font-weight:600;color:#16a34a">↓ 12.0% (-0.9h) vs last Tue</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">6.7h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">6.7h · <span style='color:#16a34a'>$101</span></span>
     </div>
   </div>
   <div id="emp-3" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -131,7 +137,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;color:#4a5568">No prior data</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">2.4h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">2.4h · <span style='color:#16a34a'>$36</span></span>
     </div>
   </div>
   <div id="emp-4" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -144,7 +150,7 @@
     </div>
     <div style="text-align:right">
       <span style="font-size:11px;color:#4a5568">No prior data</span>
-      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">2.3h</span>
+      <span style="font-size:13px;font-weight:700;color:#1a202c;margin-left:10px">2.3h · <span style='color:#16a34a'>$30</span></span>
     </div>
   </div>
   <div id="emp-5" style="display:none;background:#f0f4f8;border-radius:8px;margin:0 0 8px 20px;padding:8px 12px">
@@ -237,7 +243,7 @@
 
 
 <script>
-const empData = {"0": [{"name": "Bar Upstairs", "hours": 12.24, "cmp": 88.0, "delta": 5.7}, {"name": "Alejandro Tzoc", "hours": 12.02, "cmp": null, "delta": null}, {"name": "Bar  Downstairs", "hours": 11.39, "cmp": 298.3, "delta": 8.5}, {"name": "Jonte Miller", "hours": 5.84, "cmp": null, "delta": null}], "1": [{"name": "Anthony  Aleman", "hours": 9.63, "cmp": -13.7, "delta": -1.5}], "2": [{"name": "Mario Bernardo Utuy Sapon", "hours": 7.02, "cmp": -31.6, "delta": -3.2}], "3": [{"name": "Ismary Lopez", "hours": 6.73, "cmp": -12.0, "delta": -0.9}], "4": [{"name": "Wilmer Castro", "hours": 2.43, "cmp": null, "delta": null}], "5": [{"name": "Mari Lopez", "hours": 2.28, "cmp": null, "delta": null}]};
+const empData = {"0": [{"name": "Bar Upstairs", "hours": 12.24, "cmp": 88.0, "delta": 5.7, "laborDollars": 26.07}, {"name": "Alejandro Tzoc", "hours": 12.02, "cmp": null, "delta": null, "laborDollars": 25.6}, {"name": "Bar  Downstairs", "hours": 11.39, "cmp": 298.3, "delta": 8.5, "laborDollars": 24.26}, {"name": "Jonte Miller", "hours": 5.84, "cmp": null, "delta": null, "laborDollars": 12.44}], "1": [{"name": "Anthony  Aleman", "hours": 9.63, "cmp": -13.7, "delta": -1.5, "laborDollars": 288.9}], "2": [{"name": "Mario Bernardo Utuy Sapon", "hours": 7.02, "cmp": -31.6, "delta": -3.2, "laborDollars": 50.9}], "3": [{"name": "Ismary Lopez", "hours": 6.73, "cmp": -12.0, "delta": -0.9, "laborDollars": 100.95}], "4": [{"name": "Wilmer Castro", "hours": 2.43, "cmp": null, "delta": null, "laborDollars": 36.45}], "5": [{"name": "Mari Lopez", "hours": 2.28, "cmp": null, "delta": null, "laborDollars": 29.64}]};
 const colors = {
   text: '#1a202c', sub: '#4a5568', green: '#16a34a',
   red: '#dc2626', yellow: '#d97706', emp_bg: '#f0f4f8', border: '#d0d7e0'
@@ -286,9 +292,10 @@ function buildEmpTable(idx, container) {
       const deltaStr = emp.delta !== null ? ' (' + (emp.delta > 0 ? '+' : '') + emp.delta.toFixed(1) + 'h)' : '';
       cmpStr = '<span style="font-size:11px;font-weight:600;color:' + c + '">' + arrow + ' ' + Math.abs(pct).toFixed(1) + '%' + deltaStr + '</span>';
     }
+    const wageStr = emp.laborDollars ? '$' + emp.laborDollars.toFixed(2) : '—';
     html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid ' + colors.border + '">';
-    html += '<span style="font-size:12px;color:' + colors.text + '">' + emp.name + '</span>';
-    html += '<div style="text-align:right">' + cmpStr + '<span style="font-size:12px;font-weight:600;color:' + colors.text + ';margin-left:8px">' + emp.hours.toFixed(1) + 'h</span></div>';
+    html += '<div style="flex:1"><span style="font-size:12px;color:' + colors.text + '">' + emp.name + '</span><span style="font-size:11px;color:' + colors.sub + ';margin-left:8px">' + emp.hours.toFixed(1) + 'h</span></div>';
+    html += '<div style="text-align:right"><span style="font-size:12px;font-weight:600;color:' + colors.green + '">' + wageStr + '</span></div>';
     html += '</div>';
   });
   container.innerHTML = html;
