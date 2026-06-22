@@ -3,153 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sophie Weekly Comparison</title>
+<title>Sophie Weekly Comparison Report</title>
 <style>
 * {margin:0;padding:0;box-sizing:border-box;}
-body {background:#e8ecf0;color:#1a202c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:700px;margin:0 auto;}
-.card {background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;padding:0;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:20px;overflow:hidden;}
-.section-label {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px;}
-table {width:100%;border-collapse:collapse;}
-th {padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;text-align:right;color:#6b7280;background:#f8fafc;border-bottom:2px solid #d0d7e0;}
-th:first-child {text-align:left;}
-.highlight-cell {background:#f0fdf4;}
-.badge-lw {background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;}
-.badge-pw {background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;}
+body {background:#e8ecf0;color:#1a202c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:860px;margin:0 auto;}
+.header {display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #d0d7e0;}
+.badge {background:#f0fdf4;color:#16a34a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bbf7d0;}
+.section-label {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:24px 0 12px;}
+.grid {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px;}
+.grid-3 {display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:4px;}
+.card {background:#f0f3f6;border-radius:10px;padding:16px;border:1px solid #d0d7e0;}
+.card-label {font-size:11px;color:#4a5568;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.weeks-header {display:grid;grid-template-columns:180px 1fr 1fr 80px;gap:0;background:#fff;border-radius:12px;padding:12px 16px;border:1px solid #d0d7e0;margin-bottom:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568;}
+.weeks-header .col-metric {color:#4a5568;}
+.weeks-header .col-lw {color:#2563eb;text-align:right;}
+.weeks-header .col-pw {color:#7c3aed;text-align:right;}
+.weeks-header .col-chg {color:#4a5568;text-align:right;}
+.row {display:grid;grid-template-columns:180px 1fr 1fr 80px;gap:0;background:#f0f3f6;border-radius:8px;padding:10px 16px;border:1px solid #d0d7e0;margin-bottom:6px;align-items:center;}
+.row-alt {background:#ffffff;}
+.row .metric-name {font-size:13px;color:#1a202c;font-weight:600;}
+.row .metric-sub {font-size:11px;color:#4a5568;}
+.row .val-lw {font-size:15px;font-weight:700;color:#1a202c;text-align:right;}
+.row .val-pw {font-size:15px;font-weight:600;color:#4a5568;text-align:right;}
+.row .val-chg {font-size:12px;font-weight:700;text-align:right;}
+.up {color:#16a34a;}
+.down {color:#dc2626;}
+.neutral {color:#4a5568;}
+.week-col-lw {background:#eff6ff;border-radius:6px;padding:4px 8px;}
+.week-col-pw {background:#f5f3ff;border-radius:6px;padding:4px 8px;}
+.footer {margin-top:28px;padding-top:16px;border-top:1px solid #d0d7e0;font-size:11px;color:#718096;text-align:center;}
+.summary-cards {display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px;}
+.summary-card {border-radius:12px;padding:18px;border:1px solid #d0d7e0;}
+.summary-lw {background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#bfdbfe;}
+.summary-pw {background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#c4b5fd;}
+.summary-week-label {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+.summary-lw .summary-week-label {color:#2563eb;}
+.summary-pw .summary-week-label {color:#7c3aed;}
+.summary-sales {font-size:28px;font-weight:800;color:#1a202c;margin-bottom:4px;}
+.summary-detail {font-size:12px;color:#4a5568;}
 </style>
 </head>
 <body>
 
-<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #d0d7e0">
+<!-- HEADER -->
+<div class="header">
   <div>
-    <div style="font-size:20px;font-weight:700;color:#1a202c">🍹 Sophie Weekly Comparison</div>
-    <div style="font-size:13px;color:#4a5568;margin-top:6px">
-      <span class="badge-lw">Last Week · Mon Jun 8 – Sun Jun 14</span>
-      <span style="margin:0 8px;color:#9ca3af">vs</span>
-      <span class="badge-pw">Prior Week · Mon Jun 1 – Sun Jun 7</span>
-    </div>
-    <div style="font-size:11px;color:#9ca3af;margin-top:6px">Generated June 15, 2026 · 7/7 days last wk · 7/7 days prior wk</div>
+    <div style="font-size:20px;font-weight:700;color:#1a202c">🍹 Sophie Cocktail &amp; Terrace Bar</div>
+    <div style="font-size:13px;color:#4a5568;margin-top:4px">Weekly Comparison · <strong>Mon Jun 15 – Sun Jun 21</strong> vs <strong>Mon Jun 8 – Sun Jun 14</strong></div>
   </div>
-  <div style="background:#f0fdf4;color:#16a34a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bbf7d0;white-space:nowrap">Weekly</div>
+  <div class="badge">Week-over-Week</div>
 </div>
 
-<div class="section-label">📊 Sales & Traffic</div>
-<div class="card">
-  <table>
+<!-- SUMMARY CARDS -->
+<div class="section-label">📊 Weekly Summary</div>
+<div class="summary-cards">
+  <div class="summary-card summary-lw">
+    <div class="summary-week-label">🗓 Last Week · Jun 15–21</div>
+    <div class="summary-sales">$37,268</div>
+    <div class="summary-detail">584 checks &nbsp;·&nbsp; 1,771 covers &nbsp;·&nbsp; 500.4h labor</div>
+  </div>
+  <div class="summary-card summary-pw">
+    <div class="summary-week-label">🗓 Prior Week · Jun 8–14</div>
+    <div class="summary-sales">$35,630</div>
+    <div class="summary-detail">732 checks &nbsp;·&nbsp; 1,033 covers &nbsp;·&nbsp; 571.2h labor</div>
+  </div>
+</div>
+
+<!-- COLUMN HEADERS -->
+<div class="section-label">📈 Metrics Detail</div>
+<div class="weeks-header">
+  <span class="col-metric">Metric</span>
+  <span class="col-lw">Jun 15–21</span>
+  <span class="col-pw">Jun 8–14</span>
+  <span class="col-chg">Change</span>
+</div>
+
+<!-- SALES SECTION -->
+<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:12px 0 6px;padding-left:4px;">💰 Sales</div>
+
+<div class="row">
+  <div><div class="metric-name">Net Sales</div></div>
+  <div class="val-lw week-col-lw">$37,268.07</div>
+  <div class="val-pw week-col-pw">$35,629.69</div>
+  <div class="val-chg up">↑ +4.6%</div>
+</div>
+
+<div class="row row-alt">
+  <div><div class="metric-name">Avg Check</div></div>
+  <div class="val-lw week-col-lw">$63.82</div>
+  <div class="val-pw week-col-pw">$48.67</div>
+  <div class="val-chg up">↑ +31.1%</div>
+</div>
+
+<div class="row">
+  <div><div class="metric-name">Covers</div></div>
+  <div class="val-lw week-col-lw">1,771</div>
+  <div class="val-pw week-col-pw">1,033</div>
+  <div class="val-chg up">↑ +71.4%</div>
+</div>
+
+<div class="row row-alt">
+  <div><div class="metric-name">Checks</div></div>
+  <div class="val-lw week-col-lw">584</div>
+  <div class="val-pw week-col-pw">732</div>
+  <div class="val-chg down">↓ −20.2%</div>
+</div>
+
+<div class="row">
+  <div><div class="metric-name">Sales per Labor Hr</div></div>
+  <div class="val-lw week-col-lw">$74.48</div>
+  <div class="val-pw week-col-pw">$62.37</div>
+  <div class="val-chg up">↑ +19.4%</div>
+</div>
+
+<!-- LABOR SECTION -->
+<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:16px 0 6px;padding-left:4px;">👥 Labor</div>
+
+<div class="row row-alt">
+  <div><div class="metric-name">Total Labor Hours</div></div>
+  <div class="val-lw week-col-lw">500.4h</div>
+  <div class="val-pw week-col-pw">571.2h</div>
+  <div class="val-chg up">↓ −12.4%</div>
+</div>
+
+<div class="row">
+  <div><div class="metric-name">Regular Hours</div></div>
+  <div class="val-lw week-col-lw">466.0h</div>
+  <div class="val-pw week-col-pw">531.8h</div>
+  <div class="val-chg up">↓ −12.4%</div>
+</div>
+
+<div class="row row-alt">
+  <div><div class="metric-name">Overtime Hours</div></div>
+  <div class="val-lw week-col-lw">34.4h</div>
+  <div class="val-pw week-col-pw">39.5h</div>
+  <div class="val-chg up">↓ −12.7%</div>
+</div>
+
+<!-- ADJUSTMENTS SECTION -->
+<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:16px 0 6px;padding-left:4px;">🔄 Adjustments</div>
+
+<div class="row">
+  <div><div class="metric-name">Voids</div><div class="metric-sub">count · amount</div></div>
+  <div class="val-lw week-col-lw">61 &nbsp;·&nbsp; $2,021.51</div>
+  <div class="val-pw week-col-pw">89 &nbsp;·&nbsp; $2,377.00</div>
+  <div class="val-chg up">↓ −31.5% / −15.0%</div>
+</div>
+
+<div class="row row-alt">
+  <div><div class="metric-name">Discounts</div><div class="metric-sub">count · amount</div></div>
+  <div class="val-lw week-col-lw">47 &nbsp;·&nbsp; $1,290.50</div>
+  <div class="val-pw week-col-pw">66 &nbsp;·&nbsp; $1,484.35</div>
+  <div class="val-chg up">↓ −28.8% / −13.1%</div>
+</div>
+
+<div class="row">
+  <div><div class="metric-name">Comps</div><div class="metric-sub">count · amount</div></div>
+  <div class="val-lw week-col-lw">0 &nbsp;·&nbsp; $0.00</div>
+  <div class="val-pw week-col-pw">0 &nbsp;·&nbsp; $0.00</div>
+  <div class="val-chg neutral">—</div>
+</div>
+
+<!-- DAILY BREAKDOWN -->
+<div class="section-label" style="margin-top:28px;">📅 Daily Breakdown — Last Week (Jun 15–21)</div>
+<div style="background:#fff;border-radius:12px;border:1px solid #d0d7e0;overflow:hidden;">
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
     <thead>
-      <tr>
-        <th style="text-align:left">Metric</th>
-        <th>Last Week<br><span style="font-weight:400;color:#9ca3af;font-size:10px">Mon Jun 8 – Sun Jun 14</span></th>
-        <th>Prior Week<br><span style="font-weight:400;color:#9ca3af;font-size:10px">Mon Jun 1 – Sun Jun 7</span></th>
-        <th>Change</th>
+      <tr style="background:#f0f3f6;border-bottom:2px solid #d0d7e0;">
+        <th style="text-align:left;padding:10px 14px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:0.5px;">Day</th>
+        <th style="text-align:right;padding:10px 14px;font-weight:700;color:#4a5568;">Net Sales</th>
+        <th style="text-align:right;padding:10px 14px;font-weight:700;color:#4a5568;">Covers</th>
+        <th style="text-align:right;padding:10px 14px;font-weight:700;color:#4a5568;">Checks</th>
+        <th style="text-align:right;padding:10px 14px;font-weight:700;color:#4a5568;">Labor Hrs</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Net Sales</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$35,629.69</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$54,748.94</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↓ 34.9%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Avg Check</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$48.67</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$77.99</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↓ 37.6%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Covers</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">1,033</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">1,058</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↓ 2.4%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Checks</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">732</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">702</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#16a34a;font-weight:700">↑ 4.3%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Total Labor Hrs</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">571.2h</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">567.7h</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↑ 0.6%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Regular Hrs</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">531.8h</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">525.0h</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↑ 1.3%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Overtime Hrs</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">39.5h</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">42.7h</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#16a34a;font-weight:700">↓ 7.6%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Sales / Labor Hr</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$62.37</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$96.43</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↓ 35.3%</span></td>
-      </tr>
+      <tr style="border-bottom:1px solid #d0d7e0;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Mon Jun 15</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$796.64</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">7</td><td style="text-align:right;padding:9px 14px;">5</td><td style="text-align:right;padding:9px 14px;">5.9h</td></tr>
+      <tr style="border-bottom:1px solid #d0d7e0;background:#f8f9fb;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Tue Jun 16</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$1,572.81</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">41</td><td style="text-align:right;padding:9px 14px;">36</td><td style="text-align:right;padding:9px 14px;">41.7h</td></tr>
+      <tr style="border-bottom:1px solid #d0d7e0;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Wed Jun 17</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$1,254.54</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">39</td><td style="text-align:right;padding:9px 14px;">23</td><td style="text-align:right;padding:9px 14px;">45.3h</td></tr>
+      <tr style="border-bottom:1px solid #d0d7e0;background:#f8f9fb;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Thu Jun 18</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$4,993.44</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">80</td><td style="text-align:right;padding:9px 14px;">71</td><td style="text-align:right;padding:9px 14px;">79.2h</td></tr>
+      <tr style="border-bottom:1px solid #d0d7e0;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Fri Jun 19</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$10,281.50</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">237</td><td style="text-align:right;padding:9px 14px;">170</td><td style="text-align:right;padding:9px 14px;">128.5h</td></tr>
+      <tr style="border-bottom:1px solid #d0d7e0;background:#f8f9fb;"><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Sat Jun 20</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$15,685.01</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">1,299</td><td style="text-align:right;padding:9px 14px;">227</td><td style="text-align:right;padding:9px 14px;">148.0h</td></tr>
+      <tr><td style="padding:9px 14px;color:#1a202c;font-weight:600;">Sun Jun 21</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">$2,684.13</td><td style="text-align:right;padding:9px 14px;color:#1a202c;">68</td><td style="text-align:right;padding:9px 14px;">52</td><td style="text-align:right;padding:9px 14px;">51.7h</td></tr>
     </tbody>
+    <tfoot>
+      <tr style="background:#e8ecf0;border-top:2px solid #d0d7e0;">
+        <td style="padding:10px 14px;font-weight:800;color:#1a202c;">TOTAL</td>
+        <td style="text-align:right;padding:10px 14px;font-weight:800;color:#16a34a;">$37,268.07</td>
+        <td style="text-align:right;padding:10px 14px;font-weight:800;color:#1a202c;">1,771</td>
+        <td style="text-align:right;padding:10px 14px;font-weight:800;">584</td>
+        <td style="text-align:right;padding:10px 14px;font-weight:800;">500.4h</td>
+      </tr>
+    </tfoot>
   </table>
 </div>
 
-<div class="section-label">💸 Voids, Discounts & Comps</div>
-<div class="card">
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align:left">Metric</th>
-        <th>Last Week</th>
-        <th>Prior Week</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Voids (count)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">89</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">120</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#16a34a;font-weight:700">↓ 25.8%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Voids (amount)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$2,377.00</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$5,466.00</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#16a34a;font-weight:700">↓ 56.5%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Discounts (count)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">66</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">50</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↑ 32.0%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Discounts (amount)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$1,484.35</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$1,230.02</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#dc2626;font-weight:700">↑ 20.7%</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Comps (count)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">0</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">0</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#4a5568">—</span></td>
-      </tr>
-      <tr>
-        <td style="padding:12px 16px;font-size:13px;color:#374151;font-weight:500;border-bottom:1px solid #e5e7eb">Comps (amount)</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#1a202c;text-align:right;border-bottom:1px solid #e5e7eb">$0.00</td>
-        <td style="padding:12px 16px;font-size:14px;font-weight:700;color:#6b7280;text-align:right;border-bottom:1px solid #e5e7eb">$0.00</td>
-        <td style="padding:12px 16px;font-size:13px;text-align:right;border-bottom:1px solid #e5e7eb"><span style="color:#4a5568">—</span></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<div style="font-size:11px;color:#9ca3af;text-align:center;margin-top:12px;padding-bottom:8px">
-  Sophie Weekly Comparison · Data from Toast POS · June 15, 2026
+<!-- FOOTER -->
+<div class="footer">
+  Generated by Bill · Monday, June 22, 2026 · 8:00 AM ET<br>
+  Data source: Toast POS · Sophie Cocktail &amp; Terrace Bar
 </div>
 
 </body>
