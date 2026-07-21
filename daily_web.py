@@ -698,7 +698,7 @@ def update(pagefile="sophie-daily.html"):
     days = [d for d in pd["days"] if d["date"] != iso]
     days.insert(0, entry)
     days.sort(key=lambda d: d["date"], reverse=True)
-    days = days[:60]  # keep ~2 months
+    days = days[:92]  # keep ~3 months so the backfilled history (from Jul 1) stays available
     pd["days"] = days
     open(pagefile, "w").write(render_full_page(pd))
     print("updated", pagefile, "->", entry["date"], "| days now:", len(days))
