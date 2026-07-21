@@ -215,9 +215,20 @@ def compute_day(iso):
     mix_total = sum(v["net"] for v in mix.values())
     covered = (mix_total / net) if net else 0.0
 
+    # ---- net sales by category (item-mix share applied to net so it TIES to net sales) ----
+    base = {"food": sum(i["net"] for i in mix_food),
+            "alcohol": sum(i["net"] for i in mix_alc),
+            "nonalc": sum(i["net"] for i in mix_na)}
+    tb = sum(base.values())
+    amt = {c: round(net * base[c] / tb, 2) for c in base} if tb else {c: 0.0 for c in base}
+    resid = round(net - sum(amt.values()), 2)          # push penny rounding to the largest category
+    if tb and resid:
+        big = max(amt, key=lambda c: amt[c]); amt[big] = round(amt[big] + resid, 2)
+    by_cat = {c: {"amt": amt[c], "pct": (100 * amt[c] / net if net else 0.0)} for c in base}
+
     result = {
         "date": iso,
-        "sales": {"net": net, "avg": avg, "covers": covers, "checks": nchecks},
+        "sales": {"net": net, "avg": avg, "covers": covers, "checks": nchecks, "by_cat": by_cat},
         "labor": {"hours": lh, "ot": lot, "dollars": lc, "on_clock": on_clock,
                   "pct": (lc / net * 100) if net else 0.0},
         "roles": roles,
@@ -308,6 +319,18 @@ def _statcard(label, value, value_color, deltas):
             f'<div class="stat-v" style="color:{value_color}">{value}</div>'
             f'<div class="stat-d">{dl}</div></div>')
 
+def _catcard(by_cat):
+    """Net Sales split by food/alcohol/non-alc; $ + % that sum to net sales."""
+    labels = {"alcohol": "🍸 Alcohol", "food": "🍽️ Food", "nonalc": "🥤 Non-Alc"}
+    rows = sorted(by_cat.items(), key=lambda kv: -kv[1]["amt"])
+    inner = []
+    for key, v in rows:
+        inner.append(f'<div class="catrow"><span class="cat-n">{labels[key]}</span>'
+                     f'<span class="cat-r"><span class="cat-v">{d2(v["amt"])}</span>'
+                     f'<span class="cat-p">{v["pct"]:.1f}%</span></span></div>')
+    return (f'<div class="stat"><div class="stat-l">Net Sales by Category</div>'
+            f'<div class="catbox">{"".join(inner)}</div></div>')
+
 def render_day(day):
     s = day["sales"]; l = day["labor"]; c = day["cmp"]
     wd = c["weekday"]; last = c["last"]; a4 = c["avg4"]; n4 = c["n4"]
@@ -327,6 +350,7 @@ def render_day(day):
         delta(s["net"], a4["net"], "money2", True, f"{n4}-wk {wd} avg")]))
     o.append(_statcard("Avg Check", d2(s["avg"]), TX, [
         delta(s["avg"], (last["net"]/last["covers"] if last["covers"] else None), "money2", True, f"last {wd}")]))
+    o.append(_catcard(s["by_cat"]))
     o.append(_statcard("Covers", str(s["covers"]), TX, [
         delta(s["covers"], last["covers"], "int", True, f"last {wd}")]))
     o.append('</div>')
@@ -519,6 +543,13 @@ padding:22px;max-width:600px;margin:0 auto;font-size:13px;line-height:1.45;}
 .stat-v{font-size:24px;font-weight:700;}
 .stat-d{margin-top:5px;display:flex;flex-direction:column;gap:2px;}
 .d-line{font-size:11.5px;font-weight:600;}
+.catbox{margin-top:8px;}
+.catrow{display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:6px 0;border-bottom:1px solid #e4e9ef;}
+.catrow:last-child{border-bottom:none;}
+.cat-n{font-size:12.5px;color:#1a202c;font-weight:600;white-space:nowrap;}
+.cat-r{white-space:nowrap;text-align:right;}
+.cat-v{font-size:13px;font-weight:700;color:#16a34a;}
+.cat-p{font-size:11.5px;color:#4a5568;margin-left:5px;}
 .card{background:#fff;border:1px solid #d0d7e0;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
 .row-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:2px solid #d0d7e0;margin-bottom:10px;}
 .rt-l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568;}
