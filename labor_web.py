@@ -18,8 +18,8 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 PBKDF2_ITERS = 200000
 POSITIONS = ["Hostess", "Server Assistant", "Barback", "Runner",
-             "Line Cook", "Prep Cook", "Dishwasher", "Porter", "Operations Manager"]
-SALARIED = {"Operations Manager", "General Manager", "Owner"}
+             "Line Cook", "Prep Cook", "Dishwasher", "Porter"]
+SALARIED = {"Operations Manager", "General Manager", "Owner"}  # excluded from POSITIONS now; kept for safety
 
 
 # ---------------- formatting ----------------
@@ -109,13 +109,13 @@ def render_week(cur, prior):
     has_prior = prior is not None
     P = prior if has_prior else {}
     ch, cc = _totals(cur); ph, pc = _totals(P)
-    o = ['<div class="card summary"><div class="card-label">Controllable labor (these 9 groups)</div><div class="kpis">']
+    o = ['<div class="card summary"><div class="card-label">Controllable labor (these 8 groups)</div><div class="kpis">']
     hsub = f'vs {h(ph)} {delta_html(ch, ph, "h")}' if has_prior else '<span class="muted">no prior week</span>'
     csub = f'vs {d0(pc)} {delta_html(cc, pc, "$")}' if has_prior else '<span class="muted">no prior week</span>'
     o.append(f'<div class="kpi"><div class="kpi-label">Hours</div><div class="kpi-val">{h(ch)}</div><div class="kpi-sub">{hsub}</div></div>')
     o.append(f'<div class="kpi"><div class="kpi-label">Wage cost</div><div class="kpi-val">{d0(cc)}</div><div class="kpi-sub">{csub}</div></div>')
-    o.append('</div><div class="note">Excludes bartenders &amp; servers (paid via tip-out). '
-             'Wage cost = hours × rate (+ OT×1.5). Managers are salaried — hours shown, hourly cost not tracked.</div></div>')
+    o.append('</div><div class="note">Excludes bartenders &amp; servers (paid via tip-out) and salaried managers. '
+             'Wage cost = hours × rate (+ OT×1.5).</div></div>')
     o.append('<div class="section-label">Labor by work group — ranked by cost · tap to see people</div>')
 
     allpos = set(cur) | set(P)
