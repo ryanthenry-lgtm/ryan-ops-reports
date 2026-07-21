@@ -49,7 +49,7 @@ def fmt_time(iso):
         return ""
     try:
         s = re.sub(r'([+-]\d{2})(\d{2})$', r'\1:\2', str(iso).replace("Z", "+00:00"))
-        return datetime.datetime.fromisoformat(s).astimezone(CT).strftime("%-I:%M %p")
+        return datetime.datetime.fromisoformat(s).astimezone(CT).strftime("%-I:%M %p") + " CT"
     except Exception:
         return ""
 
