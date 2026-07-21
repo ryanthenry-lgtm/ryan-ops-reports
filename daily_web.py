@@ -21,6 +21,7 @@ Env: DAILY_PW (required). toast_lib.py + creds.json must be present for pulls.
 """
 import json, os, base64, sys, datetime, re
 from collections import defaultdict
+from zoneinfo import ZoneInfo
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -33,6 +34,24 @@ SALARIED = {"Operations Manager", "General Manager", "Owner"}
 
 def money(x):
     return float(x or 0)
+
+def _flip(n):
+    """'Last, First' -> 'First Last' for nicer display."""
+    if n and ", " in n:
+        a, b = n.split(", ", 1)
+        return f"{b} {a}".strip()
+    return n or ""
+
+CT = ZoneInfo("America/Chicago")  # Sophie is Houston, TX (910 Westheimer)
+def fmt_time(iso):
+    """Toast UTC ISO timestamp -> local Central time like '8:30 PM'."""
+    if not iso:
+        return ""
+    try:
+        s = re.sub(r'([+-]\d{2})(\d{2})$', r'\1:\2', str(iso).replace("Z", "+00:00"))
+        return datetime.datetime.fromisoformat(s).astimezone(CT).strftime("%-I:%M %p")
+    except Exception:
+        return ""
 
 # ================= Toast pull + compute =================
 _TOAST = {}
@@ -47,7 +66,12 @@ def _toast():
             nm = e.get("chosenName") or ", ".join(x for x in [e.get("lastName"), e.get("firstName")] if x)
             return (nm or "").strip()
         em = {e.get("guid"): enm(e) for e in (emps or [])}
-        _TOAST.update(g=g, tok=tok, api_get=api_get, jm=jm, em=em, item_cat=_menu_map(api_get, g, tok))
+        def cfg(path):
+            _, d = api_get(path, g, None, tok)
+            return {x.get("guid"): x.get("name") for x in d} if isinstance(d, list) else {}
+        _TOAST.update(g=g, tok=tok, api_get=api_get, jm=jm, em=em, item_cat=_menu_map(api_get, g, tok),
+                      rc=cfg("/config/v2/revenueCenters"), tbl=cfg("/config/v2/tables"),
+                      sar=cfg("/config/v2/serviceAreas"), vrs=cfg("/config/v2/voidReasons"))
     return _TOAST
 
 def _menu_map(api_get, g, tok):
@@ -143,27 +167,41 @@ def compute_day(iso):
         if o.get("voided") or o.get("deleted"):
             continue
         g = int(o.get("numberOfGuests") or 0)
+        server = _flip(T["em"].get((o.get("server") or {}).get("guid")) or "")
+        rc_name = T["rc"].get((o.get("revenueCenter") or {}).get("guid"))
+        sa_name = T["sar"].get((o.get("serviceArea") or {}).get("guid"))
+        tbl_name = T["tbl"].get((o.get("table") or {}).get("guid"))
+        loc = (f"Table {tbl_name}" if tbl_name else (sa_name or rc_name or ""))
         order_counts = False
         for c in (o.get("checks") or []):
             if c.get("voided") or c.get("deleted"):
                 continue
+            dnum = c.get("displayNumber")
+            ctime = fmt_time(c.get("closedDate") or c.get("openedDate"))
             # voids & discounts counted regardless of open/closed (they happened)
             for sel in (c.get("selections") or []):
                 if sel.get("voided"):
-                    voids.append({"item": sel.get("displayName", "Item"), "amount": money(sel.get("price"))})
+                    voids.append({"item": sel.get("displayName", "Item"), "amount": money(sel.get("price")),
+                                  "reason": T["vrs"].get((sel.get("voidReason") or {}).get("guid")) or "",
+                                  "time": fmt_time(sel.get("voidDate")) or ctime,
+                                  "who": _flip(T["em"].get((sel.get("voidingEmployee") or {}).get("guid")) or ""),
+                                  "server": server, "check": dnum})
                 for d in (sel.get("appliedDiscounts") or []):
                     discounts.append({"item": sel.get("displayName", "Item"),
                                       "name": d.get("name", "Discount"), "amount": money(d.get("discountAmount") or d.get("amount")),
-                                      "check": c.get("displayNumber")})
+                                      "check": dnum, "server": server, "time": ctime,
+                                      "approver": _flip(T["em"].get((d.get("approver") or {}).get("guid")) or "")})
                     comps_amt += money(d.get("compedAmount"))
             for d in (c.get("appliedDiscounts") or []):
                 discounts.append({"item": "(check-level)", "name": d.get("name", "Discount"),
                                   "amount": money(d.get("discountAmount") or d.get("amount")),
-                                  "check": c.get("displayNumber")})
+                                  "check": dnum, "server": server, "time": ctime,
+                                  "approver": _flip(T["em"].get((d.get("approver") or {}).get("guid")) or "")})
                 comps_amt += money(d.get("compedAmount"))
             if _is_open(c):
-                unpaid.append({"check": c.get("displayNumber"), "amount": money(c.get("totalAmount")),
-                               "net": money(c.get("amount"))})
+                unpaid.append({"check": dnum, "amount": money(c.get("totalAmount")),
+                               "net": money(c.get("amount")), "server": server, "loc": loc,
+                               "time": fmt_time(c.get("openedDate"))})
             # Net sales include ALL non-void checks (paid + open) to match Toast's
             # official Net Sales; open tabs are still flagged separately (banner + Unpaid).
             nchecks += 1; net += money(c.get("amount")); order_counts = True
@@ -450,7 +488,13 @@ def render_vdc(day):
     if not day["voids"]:
         o.append('<div class="person"><span class="pn" style="color:%s">None</span></div>' % SUB)
     for v in sorted(day["voids"], key=lambda x: -x["amount"]):
-        o.append(f'<div class="person"><span class="pn">{v["item"]}</span><span class="pv">{d2(v["amount"])}</span></div>')
+        bits = [b for b in [v.get("reason"),
+                            (f'voided {v["time"]}' if v.get("time") else ""),
+                            (f'by {v["who"]}' if v.get("who") else ""),
+                            (f'Server: {v["server"]}' if v.get("server") else ""),
+                            (f'Check #{v["check"]}' if v.get("check") else "")] if b]
+        sub = f'<span class="sub2">{" · ".join(bits)}</span>' if bits else ""
+        o.append(f'<div class="person"><span class="pn">{v["item"]}{sub}</span><span class="pv">{d2(v["amount"])}</span></div>')
     o.append('</div></details>')
     # discounts
     o.append('<details class="drow"><summary><span class="chev">▸</span>'
@@ -460,8 +504,13 @@ def render_vdc(day):
     if not day["discounts"]:
         o.append('<div class="person"><span class="pn" style="color:%s">None</span></div>' % SUB)
     for x in sorted(day["discounts"], key=lambda z: -z["amount"]):
-        chk = f' · Check #{x["check"]}' if x.get("check") else ""
-        o.append(f'<div class="person"><span class="pn">{x["item"]}<span class="sub2">{x["name"]}{chk}</span></span>'
+        bits = [b for b in [x.get("name"),
+                            (f'approved by {x["approver"]}' if x.get("approver") else ""),
+                            (x.get("time") or ""),
+                            (f'Check #{x["check"]}' if x.get("check") else ""),
+                            (f'Server: {x["server"]}' if x.get("server") else "")] if b]
+        sub = f'<span class="sub2">{" · ".join(bits)}</span>' if bits else ""
+        o.append(f'<div class="person"><span class="pn">{x["item"]}{sub}</span>'
                  f'<span class="pv">{d2(x["amount"])}</span></div>')
     o.append('</div></details>')
     # comps
@@ -483,7 +532,11 @@ def render_unpaid(day):
                  f'<span class="dr-val" style="color:{AMB}">{len(up)} check{"s" if len(up)!=1 else ""} · {d2(tot)}</span></summary>'
                  '<div class="people">')
         for u in sorted(up, key=lambda x: -x["amount"]):
-            o.append(f'<div class="person"><span class="pn">Check #{u["check"]}</span>'
+            bits = [b for b in [(f'Server: {u["server"]}' if u.get("server") else ""),
+                                u.get("loc") or "",
+                                (f'opened {u["time"]}' if u.get("time") else "")] if b]
+            sub = f'<span class="sub2">{" · ".join(bits)}</span>' if bits else ""
+            o.append(f'<div class="person"><span class="pn">Check #{u["check"]}{sub}</span>'
                      f'<span class="pv">{d2(u["amount"])}</span></div>')
         o.append('</div></details>')
     o.append('</div>')
