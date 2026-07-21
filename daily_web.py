@@ -69,19 +69,34 @@ def _menu_map(api_get, g, tok):
 NONALC_GROUPS = {"COFFEE", "N/A BEVERAGES", "ZERO PROOF DRINKS", "HH MOCKTAILS", "MOCKTAILS"}
 
 def _by_name(name):
-    """Fallback for menu items not found in the Menus API structure."""
+    """Fallback for menu items NOT found in the Menus API structure.
+    'HH'/happy-hour is NOT a signal of non-alcoholic — HH covers food + alcohol.
+    Real non-alcoholics are a specific set (sodas, waters, juice, coffee, mocktails,
+    zero-proof, 'virgin' drinks). Default is alcohol (this is a cocktail bar)."""
     n = (name or "").upper()
-    if any(w in n for w in ["MOCKTAIL", "COFFEE", "ESPRESSO", "LEMONADE", " SODA",
-                            "JUICE", "WATER", "ZERO PROOF", "RED BULL", "ICED TEA"]):
+    # 1) explicit NON-ALCOHOLIC overrides win first
+    if any(w in n for w in ["VIRGIN", "MOCKTAIL", "ZERO PROOF", "NON-ALC", "NON ALC"]):
         return "nonalc"
-    if any(w in n for w in ["BURGER", "FRIES", "SLIDER", "PASTA", "WING", "SALAD",
-                            "TACO", "NACHO", "CHARCUTERIE", "DESSERT", "PLATE", "TENDER"]):
-        return "food"
-    if any(w in n for w in ["MARTINI", "COCKTAIL", "SPRITZ", "MARGARITA", "MOJITO",
-                            "WINE", "BEER", "TEQUILA", "VODKA", "WHISKEY", "GIN ",
-                            "RUM", "SHOT", "SANGRIA", "NEGRONI", "MULE", "SOUR", "75"]):
+    # 2) obvious ALCOHOL markers (so 'Espresso Martini', 'Ginger Beer'-vs-beer edge cases resolve right)
+    if any(w in n for w in ["MARTINI", "COCKTAIL", "SPRITZ", "MULE", "MARGARITA", "NEGRONI",
+                            "MANHATTAN", "COSMO", "OLD FASHION", "MOJITO", "SANGRIA", "APEROL",
+                            "CAMPARI", "VODKA", "GIN ", "RUM", "TEQUILA", "MEZCAL", "WHISK",
+                            "BOURBON", "SCOTCH", "COGNAC", "WINE", " BEER", "CHAMPAGNE",
+                            "PROSECCO", "GRIGIO", "SAUVIGNON", "CHARDONNAY", "PINOT", "CABERNET",
+                            "MACALLAN", "DON JULIO", "REPOSADO", "BLANCO", "SHOT", " 75"]):
         return "alcohol"
-    return "nonalc"  # ambiguous unmatched -> non-alcohol / other bucket
+    # 3) genuine NON-ALCOHOLIC beverages (Ryan's set + common)
+    if any(w in n for w in ["TOPO CHICO", "ACQUA PANNA", "AQUA PANNA", "PELLEGRINO",
+                            "SPARKLING WATER", "STILL WATER", "COKE", "SPRITE", " SODA",
+                            "GINGER BEER", "GINGER ALE", "RED BULL", "LEMONADE", "JUICE",
+                            "ICED TEA", "COFFEE", "ESPRESSO", "CAPPUCCINO", "LATTE", "TONIC"]):
+        return "nonalc"
+    # 4) food
+    if any(w in n for w in ["BURGER", "FRIES", "SLIDER", "PASTA", "WING", "SALAD", "TACO",
+                            "NACHO", "CHARCUTERIE", "DESSERT", "PLATE", "TENDER", "BITE",
+                            "FLATBREAD", "AIOLI", "MOZZARELLA", "MOZARELLA", "BREAD", "FRITE"]):
+        return "food"
+    return "alcohol"  # cocktail-bar default (incl. happy-hour drinks like 'HH Passion Fruit')
 
 def categorize(menu, group, name):
     """Group-precise: use the Menus API menu/group; fall back to name only when unmatched."""
@@ -89,10 +104,12 @@ def categorize(menu, group, name):
     g = (group or "").upper().strip()
     if not m and not g:
         return _by_name(name)
-    g_last = g.split("/")[-1].strip()  # nested subgroup -> take leaf
-    if g_last in NONALC_GROUPS or "MOCKTAIL" in g_last or "ZERO PROOF" in g_last or "N/A BEV" in g_last:
+    # Non-alcoholic groups only. Substring checks on the FULL group name — 'N/A' itself
+    # contains a slash, so never split on '/'. Only the GROUP is checked, never the menu
+    # name (the 'SHOTS, SPRITZES AND MOCKTAILS' menu must not drag its shots/spritz into non-alc).
+    if "N/A BEV" in g or "MOCKTAIL" in g or "ZERO PROOF" in g or "COFFEE" in g:
         return "nonalc"
-    if m in ("FOOD", "UBER EATS") or "FOOD" in g_last or "BURGER" in g_last:
+    if m in ("FOOD", "UBER EATS") or "FOOD" in g or "BURGER" in g:
         return "food"
     return "alcohol"
 
@@ -383,13 +400,17 @@ def render_mix(day):
         o.append('<details class="drow"><summary><span class="chev">▸</span>'
                  f'<span class="dr-name">{title}</span>'
                  f'<span class="dr-val">{qty} sold · <span style="color:{GRN}">{d0f(tot)}</span></span></summary>')
-        o.append('<div class="people">')
+        o.append('<div class="mixwrap">')
         if not items:
-            o.append('<div class="person"><span class="pn" style="color:%s">None this day</span></div>' % SUB)
-        for i in items[:10]:
-            o.append(f'<div class="person"><span class="pn">{i["name"]} '
-                     f'<span class="qty">×{i["qty"]}</span></span>'
-                     f'<span class="pv" style="color:{GRN}">{d2(i["net"])}</span></div>')
+            o.append('<div class="mixrow"><span class="m-name" style="color:%s">None this day</span>'
+                     '<span class="m-qty"></span><span class="m-net"></span></div>' % SUB)
+        else:
+            o.append('<div class="mixrow mixhead"><span class="m-name">Item</span>'
+                     '<span class="m-qty">Qty</span><span class="m-net">Net $</span></div>')
+            for i in items[:10]:
+                o.append(f'<div class="mixrow"><span class="m-name">{i["name"]}</span>'
+                         f'<span class="m-qty">{i["qty"]}</span>'
+                         f'<span class="m-net">{d2(i["net"])}</span></div>')
         o.append('</div></details>')
     o.append('</div>')
     return "".join(o)
@@ -517,6 +538,14 @@ details[open]>summary .chev{transform:rotate(90deg);}
 .pn{font-size:12.5px;color:#1a202c;}
 .pv{font-size:12.5px;font-weight:600;color:#1a202c;white-space:nowrap;text-align:right;}
 .qty{font-size:11px;color:#4a5568;}
+.mixwrap{background:#f0f4f8;border-radius:8px;margin:0 0 10px 20px;padding:2px 12px;}
+.mixrow{display:grid;grid-template-columns:1fr 48px 76px;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid #e0e6ee;}
+.mixrow:last-child{border-bottom:none;}
+.mixrow .m-name{font-size:12.5px;color:#1a202c;}
+.mixrow .m-qty{font-size:12.5px;color:#4a5568;text-align:right;}
+.mixrow .m-net{font-size:12.5px;font-weight:600;color:#16a34a;text-align:right;}
+.mixrow.mixhead{border-bottom:1px solid #d0d7e0;}
+.mixrow.mixhead span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#4a5568;}
 .sub2{display:block;font-size:11px;color:#4a5568;margin-top:1px;}
 .tag-ot{font-size:9px;font-weight:700;padding:1px 6px;border-radius:999px;background:#fffbeb;color:#b45309;}
 .flatrow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;}
