@@ -126,7 +126,7 @@ def compute_day(iso):
         if o.get("voided") or o.get("deleted"):
             continue
         g = int(o.get("numberOfGuests") or 0)
-        order_has_paid = False
+        order_counts = False
         for c in (o.get("checks") or []):
             if c.get("voided") or c.get("deleted"):
                 continue
@@ -147,9 +147,9 @@ def compute_day(iso):
             if _is_open(c):
                 unpaid.append({"check": c.get("displayNumber"), "amount": money(c.get("totalAmount")),
                                "net": money(c.get("amount"))})
-                continue  # excluded from net sales
-            # paid/closed check -> counts toward net + mix
-            nchecks += 1; net += money(c.get("amount")); order_has_paid = True
+            # Net sales include ALL non-void checks (paid + open) to match Toast's
+            # official Net Sales; open tabs are still flagged separately (banner + Unpaid).
+            nchecks += 1; net += money(c.get("amount")); order_counts = True
             for sel in (c.get("selections") or []):
                 if sel.get("voided"):
                     continue
@@ -161,7 +161,7 @@ def compute_day(iso):
                 mix[key]["qty"] += int(sel.get("quantity") or 1)
                 mix[key]["net"] += money(sel.get("price"))
                 mix[key]["cat"] = cat
-        if order_has_paid:
+        if order_counts:
             covers += max(g, 1) if g else 1  # each served order = >=1 cover
     avg = net / nchecks if nchecks else 0.0
     voids_total = sum(v["amount"] for v in voids)
@@ -295,6 +295,14 @@ def render_day(day):
     s = day["sales"]; l = day["labor"]; c = day["cmp"]
     wd = c["weekday"]; last = c["last"]; a4 = c["avg4"]; n4 = c["n4"]
     o = []
+    # ---- RED unpaid-tab banner (very top, for manager review) ----
+    if day["unpaid"]:
+        up = day["unpaid"]; tot = sum(u["amount"] for u in up)
+        chks = ", ".join(f'#{u["check"]}' for u in up if u.get("check"))
+        plural = "s" if len(up) != 1 else ""
+        o.append(f'<div class="redbanner"><div class="rb-top">⚠️ {len(up)} UNPAID TAB{plural.upper()} — {d2(tot)}</div>'
+                 f'<div class="rb-sub">Check{plural} {chks} left open (included in net sales above). '
+                 f'Managers — please review &amp; close.</div></div>')
     # ---- Sales ----
     o.append('<div class="sec">📊 Sales</div><div class="grid">')
     o.append(_statcard("Net Sales", d2(s["net"]), GRN, [
@@ -476,6 +484,9 @@ padding:22px;max-width:600px;margin:0 auto;font-size:13px;line-height:1.45;}
 .title{font-size:20px;font-weight:700;}
 .sub{font-size:13px;color:#4a5568;margin-top:4px;}
 .live{background:#f0fdf4;color:#16a34a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bbf7d0;white-space:nowrap;}
+.redbanner{background:#fef2f2;border:1px solid #fecaca;border-left:5px solid #dc2626;border-radius:10px;padding:13px 16px;margin-bottom:6px;}
+.rb-top{font-size:14px;font-weight:800;color:#b91c1c;letter-spacing:.02em;}
+.rb-sub{font-size:12px;color:#dc2626;margin-top:3px;line-height:1.4;}
 .pickrow{display:flex;align-items:center;gap:8px;margin:14px 0 4px;flex-wrap:wrap;}
 .pickrow label{font-size:11px;font-weight:700;text-transform:uppercase;color:#4a5568;}
 #day{font-size:14px;font-weight:700;padding:7px 10px;border:1px solid #d0d7e0;border-radius:8px;background:#fff;color:#1a202c;}
