@@ -1,0 +1,7 @@
+# Secrets and local runtime artifacts — never commit these
+creds.json
+token.json
+
+# Python cache
+__pycache__/
+*.pyc
