@@ -1,190 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sophie Weekly Comparison Report</title>
-<style>
-* {margin:0;padding:0;box-sizing:border-box;}
-body {background:#e8ecf0;color:#1a202c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:700px;margin:0 auto;}
-.header {display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #d0d7e0}
-.header-left h1 {font-size:19px;font-weight:700;color:#1a202c}
-.header-left .subtitle {font-size:12px;color:#4a5568;margin-top:4px}
-.badge {background:#f0fdf4;color:#16a34a;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bbf7d0;white-space:nowrap}
-.section-label {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:22px 0 12px}
-/* Comparison table */
-.compare-table {width:100%;border-collapse:separate;border-spacing:0;background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);margin-bottom:8px}
-.compare-table thead tr {background:#f0f3f6}
-.compare-table th {padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:#4a5568;text-align:left;border-bottom:2px solid #d0d7e0}
-.compare-table th:not(:first-child) {text-align:right}
-.compare-table td {padding:11px 14px;font-size:14px;font-weight:600;color:#1a202c;border-bottom:1px solid #edf2f7}
-.compare-table td:not(:first-child) {text-align:right}
-.compare-table tr:last-child td {border-bottom:none}
-.compare-table tr:hover td {background:#f7fafc}
-.metric-label {font-size:13px;font-weight:600;color:#4a5568}
-.up {color:#16a34a}
-.down {color:#dc2626}
-.neutral {color:#4a5568}
-.pct {font-size:12px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap}
-.pct.up {background:#f0fdf4;color:#16a34a}
-.pct.down {background:#fef2f2;color:#dc2626}
-.pct.neutral {background:#f0f3f6;color:#4a5568}
-.section-divider {height:2px;background:#d0d7e0;margin:8px 0 4px}
-.footer {margin-top:24px;padding-top:14px;border-top:1px solid #d0d7e0;font-size:11px;color:#718096;text-align:center}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sophie Weekly Comparison</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a2e;
+      padding: 24px 16px;
+      min-height: 100vh;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      max-width: 780px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .card-header {
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      color: #fff;
+      padding: 24px 28px 20px;
+    }
+    .card-header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+    }
+    .card-header .subtitle {
+      font-size: 0.82rem;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+    .col-headers {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px 90px;
+      background: #f8f9fc;
+      border-bottom: 2px solid #e8eaf0;
+      padding: 10px 28px;
+    }
+    .col-headers span {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6c7a8d;
+    }
+    .col-headers .lw-label { color: #6c5ce7; }
+    .col-headers .pw-label { color: #a29bfe; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      padding: 0 28px;
+    }
+    table tr {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px 90px;
+      padding: 0 28px;
+      border-bottom: 1px solid #f0f2f5;
+      align-items: center;
+    }
+    table tr:last-child { border-bottom: none; }
+    table tr:hover { background: #fafbff; }
+    td {
+      padding: 11px 0;
+      font-size: 0.9rem;
+    }
+    .metric-label {
+      color: #4a5568;
+      font-weight: 500;
+    }
+    .metric-val {
+      font-weight: 600;
+      color: #1a1a2e;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric-val.prior {
+      color: #8a93a8;
+      font-weight: 400;
+    }
+    .metric-pct {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: right;
+    }
+    .pct-up { color: #00b894; }
+    .pct-down { color: #e17055; }
+    .pct-neutral { color: #b0b8c4; }
+    .section-divider {
+      display: grid;
+      grid-template-columns: 1fr 140px 140px 90px;
+      padding: 8px 28px 4px;
+      background: #f8f9fc;
+    }
+    .section-divider span {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #9aa3b0;
+    }
+    .card-footer {
+      background: #f8f9fc;
+      border-top: 1px solid #e8eaf0;
+      padding: 12px 28px;
+      font-size: 0.75rem;
+      color: #9aa3b0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #6c5ce7;
+      color: white;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+  </style>
 </head>
 <body>
+  <div class="card">
+    <div class="card-header">
+      <h1>Sophie Weekly Comparison</h1>
+      <div class="subtitle">Mon Aug 3 – Sun Aug 9 vs Mon Jul 27 – Sun Aug 2</div>
+    </div>
+    <div class="col-headers">
+      <span>Metric</span>
+      <span class="lw-label">Last Week<br>Aug 3 – Aug 9</span>
+      <span class="pw-label">Prior Week<br>Jul 27 – Aug 2</span>
+      <span style="text-align:right">Change</span>
+    </div>
 
-<div class="header">
-  <div class="header-left">
-    <h1>🍹 Sophie Weekly Comparison</h1>
-    <div class="subtitle">Mon Jul 27 – Sun Aug 2 &nbsp;vs&nbsp; Mon Jul 20 – Sun Jul 26</div>
-  </div>
-  <div class="badge">Weekly</div>
-</div>
-
-<!-- SALES -->
-<div class="section-label">📊 Sales</div>
-<table class="compare-table">
-  <thead>
-    <tr>
-      <th>Metric</th>
-      <th>Last Week<br><span style="font-weight:400;font-size:10px">Jul 27–Aug 2</span></th>
-      <th>Prior Week<br><span style="font-weight:400;font-size:10px">Jul 20–Jul 26</span></th>
-      <th>Change</th>
-    </tr>
-  </thead>
-  <tbody>
+    <div class="section-divider"><span>📈 Sales</span></div>
+    <table>
+      
     <tr>
       <td class="metric-label">Net Sales</td>
-      <td style="color:#16a34a;font-size:16px">$40,881.34</td>
-      <td>$39,580.51</td>
-      <td><span class="pct up">↑ +3.3%</span></td>
+      <td class="metric-val">$43,502.39</td>
+      <td class="metric-val prior">$40,881.34</td>
+      <td class="metric-pct"><span class="pct-up">▲ 6.4%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Avg Check</td>
-      <td>$51.29</td>
-      <td>$58.12</td>
-      <td><span class="pct down">↓ −11.7%</span></td>
+      <td class="metric-val">$58.95</td>
+      <td class="metric-val prior">$51.29</td>
+      <td class="metric-pct"><span class="pct-up">▲ 14.9%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Covers</td>
-      <td>1,049</td>
-      <td>1,878</td>
-      <td><span class="pct down">↓ −44.1%</span></td>
+      <td class="metric-val">960</td>
+      <td class="metric-val prior">1,049</td>
+      <td class="metric-pct"><span class="pct-down">▼ 8.5%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Checks</td>
-      <td>797</td>
-      <td>681</td>
-      <td><span class="pct up">↑ +17.0%</span></td>
+      <td class="metric-val">738</td>
+      <td class="metric-val prior">797</td>
+      <td class="metric-pct"><span class="pct-down">▼ 7.4%</span></td>
     </tr>
-  </tbody>
-</table>
+    </table>
 
-<!-- LABOR -->
-<div class="section-label">👥 Labor</div>
-<table class="compare-table">
-  <thead>
-    <tr>
-      <th>Metric</th>
-      <th>Last Week<br><span style="font-weight:400;font-size:10px">Jul 27–Aug 2</span></th>
-      <th>Prior Week<br><span style="font-weight:400;font-size:10px">Jul 20–Jul 26</span></th>
-      <th>Change</th>
-    </tr>
-  </thead>
-  <tbody>
+    <div class="section-divider"><span>⏱ Labor</span></div>
+    <table>
+      
     <tr>
       <td class="metric-label">Total Labor Hours</td>
-      <td>561.98h</td>
-      <td>578.18h</td>
-      <td><span class="pct up">↓ −2.8%</span></td>
+      <td class="metric-val">579.6</td>
+      <td class="metric-val prior">562.0</td>
+      <td class="metric-pct"><span class="pct-down">▲ 3.1%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Regular Hours</td>
-      <td>527.34h</td>
-      <td>543.07h</td>
-      <td><span class="pct up">↓ −2.9%</span></td>
+      <td class="metric-val">541.8</td>
+      <td class="metric-val prior">527.3</td>
+      <td class="metric-pct"><span class="pct-down">▲ 2.7%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Overtime Hours</td>
-      <td style="color:#d97706">34.64h</td>
-      <td style="color:#d97706">35.11h</td>
-      <td><span class="pct neutral">↓ −1.3%</span></td>
+      <td class="metric-val">37.9</td>
+      <td class="metric-val prior">34.6</td>
+      <td class="metric-pct"><span class="pct-down">▲ 9.3%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Sales per Labor Hr</td>
-      <td style="color:#16a34a">$72.75</td>
-      <td>$68.46</td>
-      <td><span class="pct up">↑ +6.3%</span></td>
+      <td class="metric-val">$75.05</td>
+      <td class="metric-val prior">$72.75</td>
+      <td class="metric-pct"><span class="pct-up">▲ 3.2%</span></td>
     </tr>
-  </tbody>
-</table>
+    </table>
 
-<!-- VOIDS / DISCOUNTS / COMPS -->
-<div class="section-label">⚠️ Voids, Discounts &amp; Comps</div>
-<table class="compare-table">
-  <thead>
-    <tr>
-      <th>Metric</th>
-      <th>Last Week<br><span style="font-weight:400;font-size:10px">Jul 27–Aug 2</span></th>
-      <th>Prior Week<br><span style="font-weight:400;font-size:10px">Jul 20–Jul 26</span></th>
-      <th>Change</th>
-    </tr>
-  </thead>
-  <tbody>
+    <div class="section-divider"><span>⚠️ Controls</span></div>
+    <table>
+      
     <tr>
       <td class="metric-label">Voids (count)</td>
-      <td>24</td>
-      <td>18</td>
-      <td><span class="pct down">↑ +33.3%</span></td>
+      <td class="metric-val">31</td>
+      <td class="metric-val prior">24</td>
+      <td class="metric-pct"><span class="pct-down">▲ 29.2%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Voids (amount)</td>
-      <td style="color:#dc2626">$1,993.50</td>
-      <td>$440.00</td>
-      <td><span class="pct down">↑ +353.1%</span></td>
+      <td class="metric-val">$1,256.00</td>
+      <td class="metric-val prior">$1,993.50</td>
+      <td class="metric-pct"><span class="pct-up">▼ 37.0%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Discounts (count)</td>
-      <td>68</td>
-      <td>67</td>
-      <td><span class="pct neutral">↑ +1.5%</span></td>
+      <td class="metric-val">79</td>
+      <td class="metric-val prior">68</td>
+      <td class="metric-pct"><span class="pct-down">▲ 16.2%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Discounts (amount)</td>
-      <td style="color:#dc2626">$2,639.60</td>
-      <td>$1,564.02</td>
-      <td><span class="pct down">↑ +68.8%</span></td>
+      <td class="metric-val">$1,622.50</td>
+      <td class="metric-val prior">$2,639.60</td>
+      <td class="metric-pct"><span class="pct-up">▼ 38.5%</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Comps (count)</td>
-      <td>0</td>
-      <td>1</td>
-      <td><span class="pct neutral">—</span></td>
+      <td class="metric-val">0</td>
+      <td class="metric-val prior">0</td>
+      <td class="metric-pct"><span class="pct-neutral">—</span></td>
     </tr>
+      
     <tr>
       <td class="metric-label">Comps (amount)</td>
-      <td>$0.00</td>
-      <td>$20.00</td>
-      <td><span class="pct neutral">—</span></td>
+      <td class="metric-val">$0.00</td>
+      <td class="metric-val prior">$0.00</td>
+      <td class="metric-pct"><span class="pct-neutral">—</span></td>
     </tr>
-  </tbody>
-</table>
+    </table>
 
-<!-- SUMMARY CALLOUTS -->
-<div class="section-label">💡 Highlights</div>
-<div style="background:#ffffff;border:1px solid #d0d7e0;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);font-size:13px;line-height:1.8">
-  <div>✅ <strong>Net Sales up +3.3%</strong> — $40,881 vs $39,581 prior week</div>
-  <div>✅ <strong>Sales/Labor Hr improved</strong> — $72.75 vs $68.46 (+6.3%)</div>
-  <div>✅ <strong>Labor hours slightly down</strong> — 561.98h vs 578.18h (−2.8%)</div>
-  <div>⚠️ <strong>Covers dropped sharply</strong> — 1,049 vs 1,878 (−44.1%), but more checks (+17%)</div>
-  <div>⚠️ <strong>Avg Check down</strong> — $51.29 vs $58.12 (−11.7%)</div>
-  <div>🔴 <strong>Voids spiked</strong> — $1,993.50 vs $440 (+353%) — review high-void days</div>
-  <div>🔴 <strong>Discounts up significantly</strong> — $2,640 vs $1,564 (+68.8%)</div>
-</div>
-
-<div class="footer">Generated Mon Aug 3, 2026 · 8:00 AM ET · Sophie Cocktail &amp; Terrace Bar · Data: Toast POS</div>
-
+    <div class="card-footer">
+      <span>Generated Mon Aug 10, 2026 · Data: Toast POS</span>
+      <span class="badge">Sophie</span>
+    </div>
+  </div>
 </body>
 </html>
