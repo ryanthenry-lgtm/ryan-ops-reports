@@ -1,259 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sophie Weekly Comparison</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f4f5f7;
-      color: #1a1a2e;
-      padding: 24px 16px;
-      min-height: 100vh;
-    }
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      max-width: 780px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-    .card-header {
-      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
-      color: #fff;
-      padding: 24px 28px 20px;
-    }
-    .card-header h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      line-height: 1.3;
-    }
-    .card-header .subtitle {
-      font-size: 0.82rem;
-      opacity: 0.85;
-      margin-top: 4px;
-    }
-    .col-headers {
-      display: grid;
-      grid-template-columns: 1fr 140px 140px 90px;
-      background: #f8f9fc;
-      border-bottom: 2px solid #e8eaf0;
-      padding: 10px 28px;
-    }
-    .col-headers span {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #6c7a8d;
-    }
-    .col-headers .lw-label { color: #6c5ce7; }
-    .col-headers .pw-label { color: #a29bfe; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      padding: 0 28px;
-    }
-    table tr {
-      display: grid;
-      grid-template-columns: 1fr 140px 140px 90px;
-      padding: 0 28px;
-      border-bottom: 1px solid #f0f2f5;
-      align-items: center;
-    }
-    table tr:last-child { border-bottom: none; }
-    table tr:hover { background: #fafbff; }
-    td {
-      padding: 11px 0;
-      font-size: 0.9rem;
-    }
-    .metric-label {
-      color: #4a5568;
-      font-weight: 500;
-    }
-    .metric-val {
-      font-weight: 600;
-      color: #1a1a2e;
-      font-variant-numeric: tabular-nums;
-    }
-    .metric-val.prior {
-      color: #8a93a8;
-      font-weight: 400;
-    }
-    .metric-pct {
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-align: right;
-    }
-    .pct-up { color: #00b894; }
-    .pct-down { color: #e17055; }
-    .pct-neutral { color: #b0b8c4; }
-    .section-divider {
-      display: grid;
-      grid-template-columns: 1fr 140px 140px 90px;
-      padding: 8px 28px 4px;
-      background: #f8f9fc;
-    }
-    .section-divider span {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #9aa3b0;
-    }
-    .card-footer {
-      background: #f8f9fc;
-      border-top: 1px solid #e8eaf0;
-      padding: 12px 28px;
-      font-size: 0.75rem;
-      color: #9aa3b0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .badge {
-      display: inline-block;
-      background: #6c5ce7;
-      color: white;
-      border-radius: 20px;
-      padding: 2px 10px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sophie Weekly Comparison</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f4f6f9;
+    color: #1a1a2e;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    max-width: 780px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, #6C3FC8 0%, #9B6CF0 100%);
+    color: white;
+    padding: 28px 32px 24px;
+  }
+  .header-emoji { font-size: 2rem; margin-bottom: 8px; }
+  .header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .header .subtitle {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 6px;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+  .table-wrap { padding: 0 0 8px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead tr {
+    background: #f8f7ff;
+    border-bottom: 2px solid #e8e4f8;
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #6C3FC8;
+  }
+  thead th.val { text-align: right; }
+  tbody tr {
+    border-bottom: 1px solid #f0eefb;
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: #faf9ff; }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 12px 16px; vertical-align: middle; }
+  td.metric-name {
+    font-weight: 600;
+    color: #2d2d3a;
+    font-size: 0.87rem;
+  }
+  td.val {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #333;
+  }
+  td.pw { color: #888; font-size: 0.84rem; }
+  td.chg { font-weight: 700; font-size: 0.82rem; white-space: nowrap; }
+  .pos { color: #22a86a; }
+  .neg { color: #e03c3c; }
+  .neutral { color: #999; }
+  small.sublabel { font-size: 0.72rem; color: #aaa; font-weight: 400; }
+  .section-divider {
+    background: #f0eefb;
+    padding: 6px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9B6CF0;
+    border-top: 1px solid #e8e4f8;
+  }
+  .footer {
+    padding: 14px 20px;
+    font-size: 0.72rem;
+    color: #bbb;
+    text-align: center;
+    border-top: 1px solid #f0eefb;
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-header">
-      <h1>Sophie Weekly Comparison</h1>
-      <div class="subtitle">Mon Aug 3 – Sun Aug 9 vs Mon Jul 27 – Sun Aug 2</div>
-    </div>
-    <div class="col-headers">
-      <span>Metric</span>
-      <span class="lw-label">Last Week<br>Aug 3 – Aug 9</span>
-      <span class="pw-label">Prior Week<br>Jul 27 – Aug 2</span>
-      <span style="text-align:right">Change</span>
-    </div>
-
-    <div class="section-divider"><span>📈 Sales</span></div>
-    <table>
-      
-    <tr>
-      <td class="metric-label">Net Sales</td>
-      <td class="metric-val">$43,502.39</td>
-      <td class="metric-val prior">$40,881.34</td>
-      <td class="metric-pct"><span class="pct-up">▲ 6.4%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Avg Check</td>
-      <td class="metric-val">$58.95</td>
-      <td class="metric-val prior">$51.29</td>
-      <td class="metric-pct"><span class="pct-up">▲ 14.9%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Covers</td>
-      <td class="metric-val">960</td>
-      <td class="metric-val prior">1,049</td>
-      <td class="metric-pct"><span class="pct-down">▼ 8.5%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Checks</td>
-      <td class="metric-val">738</td>
-      <td class="metric-val prior">797</td>
-      <td class="metric-pct"><span class="pct-down">▼ 7.4%</span></td>
-    </tr>
-    </table>
-
-    <div class="section-divider"><span>⏱ Labor</span></div>
-    <table>
-      
-    <tr>
-      <td class="metric-label">Total Labor Hours</td>
-      <td class="metric-val">579.6</td>
-      <td class="metric-val prior">562.0</td>
-      <td class="metric-pct"><span class="pct-down">▲ 3.1%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Regular Hours</td>
-      <td class="metric-val">541.8</td>
-      <td class="metric-val prior">527.3</td>
-      <td class="metric-pct"><span class="pct-down">▲ 2.7%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Overtime Hours</td>
-      <td class="metric-val">37.9</td>
-      <td class="metric-val prior">34.6</td>
-      <td class="metric-pct"><span class="pct-down">▲ 9.3%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Sales per Labor Hr</td>
-      <td class="metric-val">$75.05</td>
-      <td class="metric-val prior">$72.75</td>
-      <td class="metric-pct"><span class="pct-up">▲ 3.2%</span></td>
-    </tr>
-    </table>
-
-    <div class="section-divider"><span>⚠️ Controls</span></div>
-    <table>
-      
-    <tr>
-      <td class="metric-label">Voids (count)</td>
-      <td class="metric-val">31</td>
-      <td class="metric-val prior">24</td>
-      <td class="metric-pct"><span class="pct-down">▲ 29.2%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Voids (amount)</td>
-      <td class="metric-val">$1,256.00</td>
-      <td class="metric-val prior">$1,993.50</td>
-      <td class="metric-pct"><span class="pct-up">▼ 37.0%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Discounts (count)</td>
-      <td class="metric-val">79</td>
-      <td class="metric-val prior">68</td>
-      <td class="metric-pct"><span class="pct-down">▲ 16.2%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Discounts (amount)</td>
-      <td class="metric-val">$1,622.50</td>
-      <td class="metric-val prior">$2,639.60</td>
-      <td class="metric-pct"><span class="pct-up">▼ 38.5%</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Comps (count)</td>
-      <td class="metric-val">0</td>
-      <td class="metric-val prior">0</td>
-      <td class="metric-pct"><span class="pct-neutral">—</span></td>
-    </tr>
-      
-    <tr>
-      <td class="metric-label">Comps (amount)</td>
-      <td class="metric-val">$0.00</td>
-      <td class="metric-val prior">$0.00</td>
-      <td class="metric-pct"><span class="pct-neutral">—</span></td>
-    </tr>
-    </table>
-
-    <div class="card-footer">
-      <span>Generated Mon Aug 10, 2026 · Data: Toast POS</span>
-      <span class="badge">Sophie</span>
-    </div>
+<div class="card">
+  <div class="header">
+    <div class="header-emoji">🍸</div>
+    <h1>Sophie Weekly Comparison<br>Mon Aug 10 – Sun Aug 16 vs Mon Aug 3 – Sun Aug 9</h1>
+    <div class="subtitle">Last Week vs Prior Week · All figures are 7-day totals or weighted averages</div>
+    <div class="badge">Generated Mon Aug 17, 2026 · 8:00 AM ET</div>
   </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="val">Last Week<br><span style="font-weight:400;color:#9B6CF0">Mon Aug 10 – Sun Aug 16</span></th>
+          <th class="val">Prior Week<br><span style="font-weight:400;color:#bbb">Mon Aug 3 – Sun Aug 9</span></th>
+          <th class="val">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-divider"><td colspan="4">Sales & Traffic</td></tr>
+        
+    <tr>
+      <td class="metric-name">Net Sales</td>
+      <td class="val">$43,172.32</td>
+      <td class="val pw">$43,502.39</td>
+      <td class="val chg"><span class="neg">▼ 0.8%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Avg Check</td>
+      <td class="val">$56.81</td>
+      <td class="val pw">$58.95</td>
+      <td class="val chg"><span class="neg">▼ 3.6%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Covers</td>
+      <td class="val">1,021</td>
+      <td class="val pw">960</td>
+      <td class="val chg"><span class="pos">▲ 6.4%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Checks</td>
+      <td class="val">760</td>
+      <td class="val pw">738</td>
+      <td class="val chg"><span class="pos">▲ 3.0%</span></td>
+    </tr>
+        <tr class="section-divider"><td colspan="4">Labor</td></tr>
+        
+    <tr>
+      <td class="metric-name">Total Labor Hours</td>
+      <td class="val">583.2 hrs</td>
+      <td class="val pw">579.6 hrs</td>
+      <td class="val chg"><span class="neg">▲ 0.6%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Regular Hours</td>
+      <td class="val">556.9 hrs</td>
+      <td class="val pw">541.8 hrs</td>
+      <td class="val chg"><span class="neg">▲ 2.8%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Overtime Hours</td>
+      <td class="val">26.3 hrs</td>
+      <td class="val pw">37.9 hrs</td>
+      <td class="val chg"><span class="pos">▼ 30.5%</span></td>
+    </tr>
+        
+    <tr>
+      <td class="metric-name">Sales per Labor Hr</td>
+      <td class="val">$74.03</td>
+      <td class="val pw">$75.05</td>
+      <td class="val chg"><span class="neg">▼ 1.4%</span></td>
+    </tr>
+        <tr class="section-divider"><td colspan="4">Exceptions</td></tr>
+        <tr>
+          <td class="metric-name">Voids</td>
+          <td class="val">145 / $6,348.00</td>
+          <td class="val pw">31 / $1,256.00</td>
+          <td class="val chg"><span class="neg">▲ 367.7%</span></td>
+        </tr>
+        <tr>
+          <td class="metric-name">Discounts</td>
+          <td class="val">0 / $0.00</td>
+          <td class="val pw">0 / $0.00</td>
+          <td class="val chg"><span class="neutral">—</span></td>
+        </tr>
+        <tr>
+          <td class="metric-name">Comps</td>
+          <td class="val">2 / $0.00</td>
+          <td class="val pw">0 / $0.00</td>
+          <td class="val chg"><span class="neutral">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer">Sophie · Weekly Comparison · Powered by OpenClaw · Toast data via labor history archive</div>
+</div>
 </body>
 </html>
