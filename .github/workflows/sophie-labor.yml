@@ -1,0 +1,46 @@
+name: Sophie weekly labor
+# Updates sophie-labor.html every Monday with the latest complete Mon-Sun week.
+on:
+  schedule:
+    - cron: '0 14 * * 1'    # 14:00 UTC Mondays (~9am Central)
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: sophie-pages-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install --quiet cryptography requests
+      - name: Write Toast credentials (gitignored, never committed)
+        env:
+          TOAST_CLIENT_ID: ${{ secrets.TOAST_CLIENT_ID }}
+          TOAST_CLIENT_SECRET: ${{ secrets.TOAST_CLIENT_SECRET }}
+        run: printf '{"clientId":"%s","clientSecret":"%s"}' "$TOAST_CLIENT_ID" "$TOAST_CLIENT_SECRET" > creds.json
+      - name: Update weekly labor page
+        env:
+          LABOR_PW: ${{ secrets.PAGE_PW }}
+        run: python3 labor_web.py update sophie-labor.html
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet -- sophie-labor.html; then
+            echo "No change."; exit 0
+          fi
+          git config user.name "sophie-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sophie-labor.html
+          git commit -m "Weekly Sophie labor (auto)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && exit 0
+            echo "push retry $i after concurrent change…"; sleep 5
+          done
+          echo "push failed after 3 retries"; exit 1
