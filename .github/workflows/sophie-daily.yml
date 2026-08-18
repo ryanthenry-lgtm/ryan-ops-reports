@@ -1,0 +1,47 @@
+name: Sophie daily dashboard
+# Rebuilds and publishes sophie-daily.html every morning, entirely on GitHub's
+# infrastructure. Self-healing: if a run is missed, the next run backfills the gap.
+on:
+  schedule:
+    - cron: '30 12 * * *'   # 12:30 UTC daily (~7:30am Central)
+  workflow_dispatch: {}       # manual "Run workflow" button for testing
+permissions:
+  contents: write
+concurrency:
+  group: sophie-pages-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install --quiet cryptography requests
+      - name: Write Toast credentials (gitignored, never committed)
+        env:
+          TOAST_CLIENT_ID: ${{ secrets.TOAST_CLIENT_ID }}
+          TOAST_CLIENT_SECRET: ${{ secrets.TOAST_CLIENT_SECRET }}
+        run: printf '{"clientId":"%s","clientSecret":"%s"}' "$TOAST_CLIENT_ID" "$TOAST_CLIENT_SECRET" > creds.json
+      - name: Rebuild dashboard (self-healing)
+        env:
+          DAILY_PW: ${{ secrets.PAGE_PW }}
+        run: python3 cron_publish.py sophie-daily.html
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet -- sophie-daily.html; then
+            echo "No change — dashboard already current."; exit 0
+          fi
+          git config user.name "sophie-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sophie-daily.html
+          git commit -m "Daily Sophie dashboard (auto)"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && exit 0
+            echo "push retry $i after concurrent change…"; sleep 5
+          done
+          echo "push failed after 3 retries"; exit 1
