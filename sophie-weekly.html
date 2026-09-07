@@ -3,248 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sophie Weekly Comparison</title>
+<title>Sophie Weekly Comparison Report</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f0f2f5;
-    padding: 24px 16px;
-    color: #1a1a2e;
-    min-height: 100vh;
-  }
-  .card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    max-width: 760px;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-  .card-header {
-    background: linear-gradient(135deg, #6c3fc5 0%, #9b59b6 100%);
-    color: white;
-    padding: 24px 28px 20px;
-  }
-  .card-header h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: 4px;
-  }
-  .card-header .subtitle {
-    font-size: 0.8rem;
-    opacity: 0.82;
-    font-weight: 400;
-  }
-  .table-wrap {
-    padding: 0 0 12px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  thead tr {
-    background: #f7f8fc;
-    border-bottom: 2px solid #e8eaf0;
-  }
-  thead th {
-    padding: 12px 20px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: #6b7280;
-    text-align: left;
-  }
-  thead th.val, thead th.change {
-    text-align: right;
-  }
-  tbody tr {
-    border-bottom: 1px solid #f0f1f5;
-    transition: background 0.12s;
-  }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: #f9fafc; }
-  td {
-    padding: 11px 20px;
-    font-size: 0.88rem;
-  }
-  td.metric-name {
-    font-weight: 500;
-    color: #374151;
-  }
-  td.val {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    color: #1a1a2e;
-  }
-  td.val.muted {
-    color: #6b7280;
-    font-weight: 400;
-  }
-  td.change {
-    text-align: right;
-    white-space: nowrap;
-  }
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
-  .badge.up { background: #d1fae5; color: #065f46; }
-  .badge.down { background: #fee2e2; color: #991b1b; }
-  .badge.neutral { background: #f3f4f6; color: #6b7280; }
-  .section-divider {
-    background: #f7f8fc;
-    padding: 8px 20px 6px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: #9ca3af;
-    border-top: 1px solid #e8eaf0;
-    border-bottom: 1px solid #e8eaf0;
-  }
-  .footer {
-    padding: 14px 20px;
-    font-size: 0.72rem;
-    color: #9ca3af;
-    text-align: center;
-    border-top: 1px solid #f0f1f5;
-  }
-  .col-lw { color: #6c3fc5; font-weight: 700; }
-  .col-pw { color: #6b7280; }
+* {margin:0;padding:0;box-sizing:border-box;}
+body {background:#e8ecf0;color:#1a202c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;max-width:700px;margin:0 auto;}
+.card {background:#f0f3f6;border-radius:10px;padding:18px;border:1px solid #d0d7e0;}
+.section-label {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#4a5568;margin:20px 0 12px;}
+.metric-label {font-size:11px;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.metric-value {font-size:22px;font-weight:700;}
+.col-header {font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#4a5568;text-align:center;padding:8px 0;}
+.week-label {font-size:12px;color:#718096;margin-top:2px;}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="card-header">
-    <h1>Sophie Weekly Comparison</h1>
-    <div class="subtitle">Mon Aug 24 – Sun Aug 30 &nbsp;vs&nbsp; Mon Aug 17 – Sun Aug 23</div>
+
+<!-- Header -->
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid #d0d7e0">
+  <div>
+    <div style="font-size:20px;font-weight:700;color:#1a202c">🍹 Sophie Cocktail &amp; Terrace Bar</div>
+    <div style="font-size:13px;color:#4a5568;margin-top:4px">Weekly Comparison Report</div>
+    <div style="font-size:12px;color:#718096;margin-top:3px">Mon Aug 31 – Sun Sep 6 vs Mon Aug 24 – Sun Aug 30</div>
   </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th class="val col-lw">Last Week<br><span style="font-weight:400;text-transform:none;letter-spacing:0">Aug 24–30</span></th>
-          <th class="val col-pw">Prior Week<br><span style="font-weight:400;text-transform:none;letter-spacing:0">Aug 17–23</span></th>
-          <th class="change">Change</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="4" class="section-divider">📊 Revenue</td></tr>
-        
-      <tr>
-        <td class="metric-name">Net Sales</td>
-        <td class="val">$31,323.59</td>
-        <td class="val muted">$36,624.43</td>
-        <td class="change"><span class="badge down">▼ 14.5%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Avg Check</td>
-        <td class="val">$47.10</td>
-        <td class="val muted">$51.95</td>
-        <td class="change"><span class="badge down">▼ 9.3%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Covers</td>
-        <td class="val">911</td>
-        <td class="val muted">1,004</td>
-        <td class="change"><span class="badge down">▼ 9.3%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Checks</td>
-        <td class="val">665</td>
-        <td class="val muted">705</td>
-        <td class="change"><span class="badge down">▼ 5.7%</span></td>
-      </tr>
-        <tr><td colspan="4" class="section-divider">⏱ Labor</td></tr>
-        
-      <tr>
-        <td class="metric-name">Total Labor Hours</td>
-        <td class="val">530.5</td>
-        <td class="val muted">596.2</td>
-        <td class="change"><span class="badge up">▼ 11.0%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Regular Hours</td>
-        <td class="val">487.4</td>
-        <td class="val muted">567.0</td>
-        <td class="change"><span class="badge up">▼ 14.0%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Overtime Hours</td>
-        <td class="val">43.1</td>
-        <td class="val muted">29.2</td>
-        <td class="change"><span class="badge down">▲ 47.7%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Sales per Labor Hr</td>
-        <td class="val">$59.04</td>
-        <td class="val muted">$61.43</td>
-        <td class="change"><span class="badge down">▼ 3.9%</span></td>
-      </tr>
-        <tr><td colspan="4" class="section-divider">⚠️ Exceptions</td></tr>
-        
-      <tr>
-        <td class="metric-name">Voids (count)</td>
-        <td class="val">37</td>
-        <td class="val muted">24</td>
-        <td class="change"><span class="badge down">▲ 54.2%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Voids (amount)</td>
-        <td class="val">$594.50</td>
-        <td class="val muted">$1,213.00</td>
-        <td class="change"><span class="badge up">▼ 51.0%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Discounts (count)</td>
-        <td class="val">71</td>
-        <td class="val muted">75</td>
-        <td class="change"><span class="badge up">▼ 5.3%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Discounts (amount)</td>
-        <td class="val">$1,382.75</td>
-        <td class="val muted">$1,581.50</td>
-        <td class="change"><span class="badge up">▼ 12.6%</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Comps (count)</td>
-        <td class="val">0</td>
-        <td class="val muted">0</td>
-        <td class="change"><span class="badge neutral">—</span></td>
-      </tr>
-        
-      <tr>
-        <td class="metric-name">Comps (amount)</td>
-        <td class="val">$0.00</td>
-        <td class="val muted">$0.00</td>
-        <td class="change"><span class="badge neutral">—</span></td>
-      </tr>
-      </tbody>
-    </table>
+  <div style="background:#eff6ff;color:#1d4ed8;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid #bfdbfe">Weekly</div>
+</div>
+
+<!-- Column Headers -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div></div>
+  <div class="col-header" style="background:#dbeafe;border-radius:8px;border:1px solid #93c5fd;">Last Week<br><span class="week-label">Aug 31 – Sep 6</span></div>
+  <div class="col-header" style="background:#f3f4f6;border-radius:8px;border:1px solid #d1d5db;">Prior Week<br><span class="week-label">Aug 24 – Aug 30</span></div>
+</div>
+
+<!-- Sales Section -->
+<div class="section-label">📊 Sales</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Net Sales</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#16a34a;">$41,378.50</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 32.1% ($10,054.91)</span></div>
   </div>
-  <div class="footer">
-    Generated Mon Aug 31, 2026 · Data source: Toast POS · Sophie location
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$31,323.59</div>
   </div>
 </div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Avg Check</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">$60.41</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 28.2% ($13.30)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$47.10</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Covers</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">1,641</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 80.1% (730)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">911</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Checks</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">685</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 3.0% (20)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">665</div>
+  </div>
+</div>
+
+<!-- Labor Section -->
+<div class="section-label">👥 Labor</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Total Labor Hours</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">616.1h</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#dc2626">↑ 16.1% (85.6h)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">530.5h</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Regular Hours</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">566.5h</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 16.2% (79.1h)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">487.4h</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Overtime Hours</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#d97706;">49.6h</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#dc2626">↑ 15.1% (6.5h)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">43.1h</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Sales / Labor Hr</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#16a34a;">$67.17</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#16a34a">↑ 13.8% ($8.12)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$59.04</div>
+  </div>
+</div>
+
+<!-- Exceptions Section -->
+<div class="section-label">⚠️ Exceptions</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Voids (count)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">41</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#dc2626">↑ 10.8% (4)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">37</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Voids (amount)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#dc2626;">$774.50</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;font-weight:600;color:#dc2626">↑ 30.3% ($180.00)</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$594.50</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Discounts (count)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">0</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;color:#718096">— N/A</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">0</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Discounts (amount)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">$0.00</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;color:#718096">— N/A</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$0.00</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Comps (count)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">0</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;color:#718096">— N/A</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">0</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px">
+  <div class="card" style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:600;color:#1a202c;">Comps (amount)</span></div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#1a202c;">$0.00</div>
+    <div style="margin-top:6px;"><span style="font-size:12px;color:#718096">— N/A</span></div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div class="metric-value" style="color:#374151;">$0.00</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="padding-top:16px;border-top:1px solid #d0d7e0;text-align:center;font-size:11px;color:#718096;">
+  Generated Mon Sep 7 2026 · Bill (OpenClaw) · Source: Toast POS
+</div>
+
 </body>
 </html>
