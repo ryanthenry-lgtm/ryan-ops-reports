@@ -1,0 +1,74 @@
+name: Sophie weekly tip-out
+# Builds the weekly Sophie tip-out every Monday morning on GitHub's own
+# infrastructure, commits the workbook to the repo, and emails it to Ryan.
+# Self-contained: no Mac, no agent — same pattern as the daily dashboard.
+on:
+  schedule:
+    - cron: '0 13 * * 1'      # Mondays 13:00 UTC (~8am Central); GitHub may delay ~30-60 min
+  workflow_dispatch: {}         # manual "Run workflow" button for testing
+permissions:
+  contents: write
+concurrency:
+  group: sophie-tipout
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python deps + LibreOffice (for recalc)
+        run: |
+          pip install --quiet openpyxl requests
+          sudo apt-get update -qq && sudo apt-get install -y -qq libreoffice-calc
+      - name: Write Toast credentials (gitignored, never committed)
+        env:
+          TOAST_CLIENT_ID: ${{ secrets.TOAST_CLIENT_ID }}
+          TOAST_CLIENT_SECRET: ${{ secrets.TOAST_CLIENT_SECRET }}
+        run: printf '{"clientId":"%s","clientSecret":"%s"}' "$TOAST_CLIENT_ID" "$TOAST_CLIENT_SECRET" > creds.json
+      - name: Build tip-out for last complete Mon-Sun
+        run: python3 sophie_tipout_build.py full
+      - name: Recalc so values are baked in
+        run: |
+          f=$(ls tipout/Sophie_TipOut_*.xlsx | sort | tail -1)
+          libreoffice --headless --calc --convert-to xlsx --outdir tipout/recalc "$f"
+          mv -f "tipout/recalc/$(basename "$f")" "$f"
+          rm -rf tipout/recalc
+          echo "TIPOUT_FILE=$f" >> "$GITHUB_ENV"
+          echo "TIPOUT_NAME=$(basename "$f")" >> "$GITHUB_ENV"
+      - name: Commit the workbook to the repo
+        run: |
+          git config user.name "sophie-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add tipout/*.xlsx
+          if git diff --cached --quiet; then
+            echo "No new tip-out to commit."
+          else
+            git commit -m "Weekly Sophie tip-out (auto)"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "push retry $i"; sleep 5
+            done
+          fi
+      - name: Email the tip-out to Ryan
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Sophie Bot <${{ secrets.MAIL_USERNAME }}>
+          to: ryan@sophiehtx.com
+          subject: "Sophie weekly tip-out - ${{ env.TIPOUT_NAME }}"
+          body: |
+            This week's Sophie tip-out is attached (and committed to the repo).
+
+            Reminder: fill in the yellow manager-entry rows (downstairs section + any
+            unclocked bartenders), verify any auto-placed bartenders, and update the
+            Balance Tracker.
+          attachments: ${{ env.TIPOUT_FILE }}
